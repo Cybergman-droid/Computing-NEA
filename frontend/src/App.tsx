@@ -7,6 +7,7 @@ function App() {
 				</h1>
 				<p className='text-base-content'>Tailwind and DaisyUI are working</p>
 				<button className='btn btn-primary mt-4'>Test button</button>
+				<button className='bo'>Test button</button>
 			</div>
 		</div>
 	);
