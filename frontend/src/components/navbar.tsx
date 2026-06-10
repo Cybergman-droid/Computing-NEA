@@ -5,12 +5,14 @@ type ButtonProps = {
 
 function NavbarButton({ children }: ButtonProps) {
 	return (
-		<button className='btn btn-soft btn-primary rounded-3xl'>{children}</button>
+		<button className='btn btn-outline btn-accent rounded-3xl'>
+			{children}
+		</button>
 	);
 }
 function Navbar() {
 	return (
-		<div className='flex gap-2.5'>
+		<div className='flex gap-2.5 justify-center'>
 			<NavbarButton>Dashboard</NavbarButton>
 			<NavbarButton>Charts</NavbarButton>
 			<NavbarButton>File upload</NavbarButton>
