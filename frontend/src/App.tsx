@@ -1,5 +1,11 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Navbar from "./components/navbar";
+import TransactionsPlaceholder from "./pages/transactions";
+import CalculatorsPlaceholder from "./pages/calculators";
+import ImportPlaceholder from "./pages/import";
+import BudgetsPlaceholder from "./pages/budgets";
+import ChartsPlaceholder from "./pages/charts";
+import DashboardPlaceholder from "./pages/dashboard";
 
 function App() {
 	return (
