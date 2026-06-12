@@ -1,9 +1,6 @@
-import Navbar from "../components/navbar";
-
 function BudgetsPlaceholder() {
 	return (
 		<div className='bg-base-300'>
-			<Navbar />
 			<div className='min-h-screen bg-base-300 flex items-center justify-center'>
 				<div className='card bg-base-200 shadow-xl p-8'>
 					<h1 className='text-3xl font-bold text-primary mb-4'>
