@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 
 type ButtonProps = {
 	children: ReactNode;
@@ -17,26 +17,28 @@ function NavbarButton({ children }: ButtonProps): ReactElement {
 // Navbar element that is rendered at the top of every page
 function Navbar() {
 	return (
-		<nav className='flex gap-10 justify-center'>
-			<Link to='/'>
-				<NavbarButton>Dashboard</NavbarButton>
-			</Link>
-			<Link to='/Charts'>
-				<NavbarButton>Charts</NavbarButton>
-			</Link>
-			<Link to='/Import'>
-				<NavbarButton>File upload</NavbarButton>
-			</Link>
-			<Link to='/Budgets'>
-				<NavbarButton>Budgets</NavbarButton>
-			</Link>
-			<Link to='/Transactions'>
-				<NavbarButton>Transactions</NavbarButton>
-			</Link>
-			<Link to='/Calculators'>
-				<NavbarButton>Calculators</NavbarButton>
-			</Link>
-		</nav>
+		<>
+			<nav className='flex gap-10 justify-center'>
+				<Link to='/'>
+					<NavbarButton>Dashboard</NavbarButton>
+				</Link>
+				<Link to='/Charts'>
+					<NavbarButton>Charts</NavbarButton>
+				</Link>
+				<Link to='/Import'>
+					<NavbarButton>File upload</NavbarButton>
+				</Link>
+				<Link to='/Budgets'>
+					<NavbarButton>Budgets</NavbarButton>
+				</Link>
+				<Link to='/Transactions'>
+					<NavbarButton>Transactions</NavbarButton>
+				</Link>
+				<Link to='/Calculators'>
+					<NavbarButton>Calculators</NavbarButton>
+				</Link>
+			</nav>
+		</>
 	);
 }
 

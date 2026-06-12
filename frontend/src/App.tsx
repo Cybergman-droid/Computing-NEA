@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import TransactionsPlaceholder from "./pages/transactions";
 import CalculatorsPlaceholder from "./pages/calculators";
@@ -9,9 +9,17 @@ import DashboardPlaceholder from "./pages/dashboard";
 
 function App() {
 	return (
-		<BrowserRouter>
+		<>
 			<div className='bg-base-300'>
 				<Navbar />
+				<Routes>
+					<Route path='/' element={<DashboardPlaceholder />} />
+					<Route path='/Charts' element={<ChartsPlaceholder />} />
+					<Route path='/Import' element={<ImportPlaceholder />} />
+					<Route path='/Budgets' element={<BudgetsPlaceholder />} />
+					<Route path='/Transactions' element={<TransactionsPlaceholder />} />
+					<Route path='/Calculators' element={<CalculatorsPlaceholder />} />
+				</Routes>
 				<div className='min-h-screen bg-base-300 flex items-center justify-center'>
 					<div className='card bg-base-200 shadow-xl p-8'>
 						<h1 className='text-3xl font-bold text-primary mb-4'>
@@ -24,7 +32,7 @@ function App() {
 					</div>
 				</div>
 			</div>
-		</BrowserRouter>
+		</>
 	);
 }
 
