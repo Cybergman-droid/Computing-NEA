@@ -14,7 +14,7 @@ function NavbarButton({ children }: ButtonProps): ReactElement {
 	);
 }
 
-// Navbar element that is rendered at the top of every page
+// Navbar element that is rendered at the top of every page with react router functionality to link to different pages
 function Navbar() {
 	return (
 		<>
