@@ -19,6 +19,7 @@ function Navbar() {
 	return (
 		<>
 			<nav className='flex gap-10 justify-center'>
+				{/* Defined the paths that the button will link to when pressed */}
 				<Link to='/'>
 					<NavbarButton>Dashboard</NavbarButton>
 				</Link>

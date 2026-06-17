@@ -12,6 +12,7 @@ function App() {
 		<>
 			<div className='bg-base-300'>
 				<Navbar />
+				{/* Define the path ond the conponent that will be rendered */}
 				<Routes>
 					<Route path='/' element={<DashboardPlaceholder />} />
 					<Route path='/Charts' element={<ChartsPlaceholder />} />
