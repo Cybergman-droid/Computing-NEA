@@ -1,4 +1,9 @@
-import {type ReactElement, type ReactNode, useState} from "react";
+import {
+    type ReactElement,
+    type ReactNode,
+    type SyntheticEvent,
+    useState,
+} from "react";
 import {Link} from "react-router-dom";
 
 type ButtonProps = {
@@ -26,13 +31,17 @@ function NavbarButton({children, focused}: ButtonProps): ReactElement {
 // Navbar element that is rendered at the top of every page with react router functionality to link to different pages
 function Navbar() {
     const [navbarPage, setNavbarPage] = useState("dashboard");
-    const handleClick = (e: MouseEvent) => {
+    const handleClick = (e: SyntheticEvent): void => {
+        const buttonText: string = e.target.innerHTML;
         console.log(`Clicked element: ${e.target}`);
-        console.log(`Clicked element content: ${e.target.innerHTML}`);
+        console.log(e);
+        if (e.target instanceof HTMLElement) {
+            console.log(`Clicked element content: ${buttonText}`);
+        }
         if (e.target instanceof HTMLButtonElement) {
-            setNavbarPage(e.target.innerHTML.toLowerCase());
+            setNavbarPage(buttonText.toLowerCase());
         } else {
-            console.log("Bouton elemrnt not clicked ");
+            console.log("Button element not clicked ");
         }
     };
     switch (navbarPage) {

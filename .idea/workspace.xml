@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d395f20f-fb24-4ebf-bdbc-b8c20fc05c91" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/navbar.tsx" afterDir="false" />
     </list>
@@ -46,6 +47,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "code.cleanup.on.save": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
@@ -55,7 +57,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "rearrange.code.on.save": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "settings.javascript.linters.tslint",
     "to.speed.mode.migration.done": "true",
     "ts.external.directory.path": "C:\\Users\\jason\\Documents\\GitHub\\Computing-NEA\\frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
@@ -91,7 +93,7 @@
       <workItem from="1782419732800" duration="3979000" />
       <workItem from="1782423760747" duration="1392000" />
       <workItem from="1782425509069" duration="212000" />
-      <workItem from="1782425733330" duration="808000" />
+      <workItem from="1782425733330" duration="3594000" />
     </task>
     <servers />
   </component>
