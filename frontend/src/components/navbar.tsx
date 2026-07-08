@@ -1,10 +1,5 @@
-import {
-	type ReactElement,
-	type ReactNode,
-	type SyntheticEvent,
-	useState,
-} from "react";
-import { Link } from "react-router-dom";
+import { type ReactElement, type ReactNode } from "react";
+import { NavLink } from "react-router-dom";
 
 type ButtonProps = {
 	children: ReactNode;
@@ -29,178 +24,43 @@ function NavbarButton({ children, focused }: ButtonProps): ReactElement {
 }
 
 // Navbar element that is rendered at the top of every page with react router functionality to link to different pages
-// And highlights the current page that is active
+// Highlights the button based on the isActive prop which checks if the current url matches the path
 function Navbar() {
-	const [activePage, setActivePage] = useState("dashboard"); // Tracks the current page and defines a function to update it
-
-	// Runs everytime a navbar button is clicked and updates the activePage variable based on the button clicked
-	const handleClick = (e: SyntheticEvent): void => {
-		const buttonText: string = e.target.innerHTML;
-		console.log(`Clicked element: ${e.target}`);
-		console.log(e);
-		if (e.target instanceof HTMLElement) {
-			console.log(`Clicked element content: ${buttonText}`);
-		}
-		if (e.target instanceof HTMLButtonElement) {
-			setActivePage(buttonText.toLowerCase());
-		} else {
-			console.log("Button element not clicked ");
-		}
-	};
-
-	// logic to render a different navbar variant with the current pages button highlighted depending on the activePage variable
-	switch (activePage) {
-		case "dashboard":
-			return (
-				<nav className='flex gap-10 justify-center' onClick={handleClick}>
-					{/* Defined the paths that the button will link to when pressed */}
-					<Link to='/'>
-						<NavbarButton focused={true}>Dashboard</NavbarButton>
-					</Link>
-					<Link to='/Charts'>
-						<NavbarButton>Charts</NavbarButton>
-					</Link>
-					<Link to='/Import'>
-						<NavbarButton>File upload</NavbarButton>
-					</Link>
-					<Link to='/Budgets'>
-						<NavbarButton>Budgets</NavbarButton>
-					</Link>
-					<Link to='/Transactions'>
-						<NavbarButton>Transactions</NavbarButton>
-					</Link>
-					<Link to='/Calculators'>
-						<NavbarButton>Calculators</NavbarButton>
-					</Link>
-				</nav>
-			);
-
-		case "charts":
-			return (
-				<nav className='flex gap-10 justify-center' onClick={handleClick}>
-					{/* Defined the paths that the button will link to when pressed */}
-					<Link to='/'>
-						<NavbarButton>Dashboard</NavbarButton>
-					</Link>
-					<Link to='/Charts'>
-						<NavbarButton focused={true}>Charts</NavbarButton>
-					</Link>
-					<Link to='/Import'>
-						<NavbarButton>File upload</NavbarButton>
-					</Link>
-					<Link to='/Budgets'>
-						<NavbarButton>Budgets</NavbarButton>
-					</Link>
-					<Link to='/Transactions'>
-						<NavbarButton>Transactions</NavbarButton>
-					</Link>
-					<Link to='/Calculators'>
-						<NavbarButton>Calculators</NavbarButton>
-					</Link>
-				</nav>
-			);
-
-		case "file upload":
-			return (
-				<nav className='flex gap-10 justify-center' onClick={handleClick}>
-					{/* Defined the paths that the button will link to when pressed */}
-					<Link to='/'>
-						<NavbarButton>Dashboard</NavbarButton>
-					</Link>
-					<Link to='/Charts'>
-						<NavbarButton>Charts</NavbarButton>
-					</Link>
-					<Link to='/Import'>
-						<NavbarButton focused={true}>File upload</NavbarButton>
-					</Link>
-					<Link to='/Budgets'>
-						<NavbarButton>Budgets</NavbarButton>
-					</Link>
-					<Link to='/Transactions'>
-						<NavbarButton>Transactions</NavbarButton>
-					</Link>
-					<Link to='/Calculators'>
-						<NavbarButton>Calculators</NavbarButton>
-					</Link>
-				</nav>
-			);
-
-		case "budgets":
-			return (
-				<nav className='flex gap-10 justify-center' onClick={handleClick}>
-					{/* Defined the paths that the button will link to when pressed */}
-					<Link to='/'>
-						<NavbarButton>Dashboard</NavbarButton>
-					</Link>
-					<Link to='/Charts'>
-						<NavbarButton>Charts</NavbarButton>
-					</Link>
-					<Link to='/Import'>
-						<NavbarButton>File upload</NavbarButton>
-					</Link>
-					<Link to='/Budgets'>
-						<NavbarButton focused={true}>Budgets</NavbarButton>
-					</Link>
-					<Link to='/Transactions'>
-						<NavbarButton>Transactions</NavbarButton>
-					</Link>
-					<Link to='/Calculators'>
-						<NavbarButton>Calculators</NavbarButton>
-					</Link>
-				</nav>
-			);
-
-		case "transactions":
-			return (
-				<nav className='flex gap-10 justify-center' onClick={handleClick}>
-					{/* Defined the paths that the button will link to when pressed */}
-					<Link to='/'>
-						<NavbarButton>Dashboard</NavbarButton>
-					</Link>
-					<Link to='/Charts'>
-						<NavbarButton>Charts</NavbarButton>
-					</Link>
-					<Link to='/Import'>
-						<NavbarButton>File upload</NavbarButton>
-					</Link>
-					<Link to='/Budgets'>
-						<NavbarButton>Budgets</NavbarButton>
-					</Link>
-					<Link to='/Transactions'>
-						<NavbarButton focused={true}>Transactions</NavbarButton>
-					</Link>
-					<Link to='/Calculators'>
-						<NavbarButton>Calculators</NavbarButton>
-					</Link>
-				</nav>
-			);
-
-		case "calculators":
-			return (
-				<nav className='flex gap-10 justify-center' onClick={handleClick}>
-					{/* Defined the paths that the button will link to when pressed */}
-					<Link to='/'>
-						<NavbarButton>Dashboard</NavbarButton>
-					</Link>
-					<Link to='/Charts'>
-						<NavbarButton>Charts</NavbarButton>
-					</Link>
-					<Link to='/Import'>
-						<NavbarButton>File upload</NavbarButton>
-					</Link>
-					<Link to='/Budgets'>
-						<NavbarButton>Budgets</NavbarButton>
-					</Link>
-					<Link to='/Transactions'>
-						<NavbarButton>Transactions</NavbarButton>
-					</Link>
-					<Link to='/Calculators'>
-						<NavbarButton focused={true}>Calculators</NavbarButton>
-					</Link>
-				</nav>
-			);
-	}
+	return (
+		<nav className='flex gap-10 justify-center'>
+			{/* Defined the paths that the button will link to when pressed */}
+			<NavLink to='/'>
+				{({ isActive }) => (
+					<NavbarButton focused={isActive}>Dashboard</NavbarButton>
+				)}
+			</NavLink>
+			<NavLink to='/Charts'>
+				{({ isActive }) => (
+					<NavbarButton focused={isActive}>Charts</NavbarButton>
+				)}
+			</NavLink>
+			<NavLink to='/Import'>
+				{({ isActive }) => (
+					<NavbarButton focused={isActive}>Import</NavbarButton>
+				)}
+			</NavLink>
+			<NavLink to='/Budgets'>
+				{({ isActive }) => (
+					<NavbarButton focused={isActive}>Budgets</NavbarButton>
+				)}
+			</NavLink>
+			<NavLink to='/Transactions' viewTransition={true}>
+				{({ isActive }) => (
+					<NavbarButton focused={isActive}>Transactions</NavbarButton>
+				)}
+			</NavLink>
+			<NavLink to='/Calculators'>
+				{({ isActive }) => (
+					<NavbarButton focused={isActive}>Calculators</NavbarButton>
+				)}
+			</NavLink>
+		</nav>
+	);
 }
 
-// Exports the Navbar component so that it can be used in other places
 export default Navbar;
