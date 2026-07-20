@@ -29,31 +29,37 @@ function Navbar() {
 	return (
 		<nav className='flex gap-10 justify-center'>
 			{/* Defined the paths that the button will link to when pressed */}
+
 			<NavLink to='/'>
 				{({ isActive }) => (
 					<NavbarButton focused={isActive}>Dashboard</NavbarButton>
 				)}
 			</NavLink>
+
 			<NavLink to='/Charts'>
 				{({ isActive }) => (
 					<NavbarButton focused={isActive}>Charts</NavbarButton>
 				)}
 			</NavLink>
+
 			<NavLink to='/Import'>
 				{({ isActive }) => (
 					<NavbarButton focused={isActive}>Import</NavbarButton>
 				)}
 			</NavLink>
+
 			<NavLink to='/Budgets'>
 				{({ isActive }) => (
 					<NavbarButton focused={isActive}>Budgets</NavbarButton>
 				)}
 			</NavLink>
+
 			<NavLink to='/Transactions' viewTransition={true}>
 				{({ isActive }) => (
 					<NavbarButton focused={isActive}>Transactions</NavbarButton>
 				)}
 			</NavLink>
+
 			<NavLink to='/Calculators'>
 				{({ isActive }) => (
 					<NavbarButton focused={isActive}>Calculators</NavbarButton>
