@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
-import TransactionsPlaceholder from "./pages/transactions";
-import CalculatorsPlaceholder from "./pages/calculators";
-import ImportPlaceholder from "./pages/import";
-import BudgetsPlaceholder from "./pages/budgets";
-import ChartsPlaceholder from "./pages/charts";
-import DashboardPlaceholder from "./pages/dashboard";
+import TransactionsPlaceholder from "./pages/Transactions/transactions.tsx";
+import CalculatorsPlaceholder from "./pages/Calculators/calculators.tsx";
+import ImportPlaceholder from "./pages/Import/import.tsx";
+import BudgetsPlaceholder from "./pages/Budgets/budgets.tsx";
+import ChartsPlaceholder from "./pages/Charts/charts.tsx";
+import DashboardPlaceholder from "./pages/Dashboard/dashboard.tsx";
 
 function App() {
 	return (
