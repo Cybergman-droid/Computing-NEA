@@ -14,7 +14,6 @@ type Transaction = {
 	transactionDate: Date;
 };
 
-const transactionTypeOptions = ["Deposit", "Withdrawal"];
 const categoryDropdownOptions = [
 	"Groceries",
 	"Transport",
@@ -27,16 +26,71 @@ const categoryDropdownOptions = [
 	"Subscriptions",
 	"Miscellaneous",
 ];
+const transactionTypeOptions = ["Deposit", "Withdrawal"];
 
-function SingleTransactionUploadForm() {
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const transactionFormData = new FormData(e.currentTarget);
-		const transationObj = Object.fromEntries(transactionFormData);
+function transactionFormValidation(
+	payload: Record<string, FormDataEntryValue>,
+): Transaction {
+	const transactionName = String(payload.transactionName).trim();
+	const transactionDescription = String(
+		payload.transactionDescription ?? "",
+	).trim();
+	const transactionType = String(payload.transactionType);
+	const transactionCategory = String(payload.transactionCategory);
+	const transactionAmount = Number(payload.transactionAmount);
+	const transactionDate = new Date(String(payload.transactionDate));
+	const currentYear = new Date().getFullYear();
 
-		console.log(transationObj);
+	if (!transactionName) {
+		throw new Error("Transaction name is required");
+	}
+
+	if (!transactionTypeOptions.includes(transactionType)) {
+		throw new Error("Invalid transaction type");
+	}
+
+	if (!categoryDropdownOptions.includes(transactionCategory)) {
+		throw new Error("Invalid transaction category");
+	}
+
+	if (!Number.isFinite(transactionAmount) || transactionAmount <= 0) {
+		throw new Error("Amount must be a positive number");
+	}
+	console.log();
+	if (
+		Number.isNaN(transactionDate.getTime()) ||
+		transactionDate.getFullYear() > currentYear
+	) {
+		throw new Error("Invalid transaction date");
+	}
+
+	const transaction = {
+		transactionName,
+		transactionDescription,
+		transactionType: transactionType as Transaction["transactionType"],
+		transactionAmount,
+		transactionCategory,
+		transactionDate,
 	};
 
+	return transaction;
+}
+
+function handleSubmit(e: FormEvent<HTMLFormElement>) {
+	e.preventDefault();
+
+	const payload = Object.fromEntries(new FormData(e.currentTarget));
+
+	try {
+		const transaction: Transaction = transactionFormValidation(payload);
+		console.log(transaction);
+	} catch (error) {
+		console.error(error);
+		window.alert(error);
+	}
+}
+
+function SingleTransactionUploadForm() {
 	return (
 		<>
 			<p className='justify-self-center text-3xl font-bold mb-15'>
@@ -59,7 +113,6 @@ function SingleTransactionUploadForm() {
 					<div className='flex justify-between gap-6'>
 						<DropdownMenu
 							defaultValue='Deposit or Withdrawal'
-							required={true}
 							dropdownOptions={transactionTypeOptions}
 							name='transactionType'
 						/>
@@ -75,7 +128,6 @@ function SingleTransactionUploadForm() {
 							defaultValue={"Categories"}
 							dropdownOptions={categoryDropdownOptions}
 							name='transactionCategory'
-							required={true}
 						/>
 						<DateInputField name='transactionDate' required={true} />
 					</div>
