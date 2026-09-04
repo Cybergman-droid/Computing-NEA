@@ -32,9 +32,9 @@ function SingleTransactionUploadForm() {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const transactionFormData = new FormData(e.currentTarget);
-		const payload = Object.fromEntries(transactionFormData);
+		const transationObj = Object.fromEntries(transactionFormData);
 
-		console.log(payload);
+		console.log(transationObj);
 	};
 
 	return (
@@ -43,11 +43,12 @@ function SingleTransactionUploadForm() {
 				Enter the information for a single transaction
 			</p>
 
-			<form onSubmit={handleSubmit}>
+			<form id='transactionForm' onSubmit={handleSubmit}>
 				<div className='flex flex-col gap-6'>
 					<TextInputField
 						placeholder='Transaction Name'
 						name='transactionName'
+						required={true}
 					/>
 					<TextInputField
 						placeholder='Transaction Description (optional)'
@@ -58,10 +59,15 @@ function SingleTransactionUploadForm() {
 					<div className='flex justify-between gap-6'>
 						<DropdownMenu
 							defaultValue='Deposit or Withdrawal'
+							required={true}
 							dropdownOptions={transactionTypeOptions}
 							name='transactionType'
 						/>
-						<NumberInputField placeholder='Amount' name='transactionAmount' />
+						<NumberInputField
+							placeholder='Amount'
+							name='transactionAmount'
+							required={true}
+						/>
 					</div>
 
 					<div className='flex justify-between gap-6'>
@@ -69,8 +75,9 @@ function SingleTransactionUploadForm() {
 							defaultValue={"Categories"}
 							dropdownOptions={categoryDropdownOptions}
 							name='transactionCategory'
+							required={true}
 						/>
-						<DateInputField name='transactionDate' />
+						<DateInputField name='transactionDate' required={true} />
 					</div>
 
 					<SubmitButton name='transactionSubmit' />

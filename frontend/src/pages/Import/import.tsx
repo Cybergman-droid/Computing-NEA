@@ -1,6 +1,19 @@
 import SingleTransactionUploadForm from "./singleTransactionUploadForm.tsx";
+import { useRef } from "react";
 
 function ImportPlaceholder() {
+	const uploadFormModal = useRef<HTMLDialogElement>(null);
+
+	const openUploadFormModal = () => {
+		uploadFormModal.current?.showModal();
+	};
+
+	const resetUploadForm = () => {
+		(
+			document.getElementById("transactionForm") as HTMLFormElement | null
+		)?.reset();
+	};
+
 	return (
 		<div className='bg-base-300'>
 			<div className='min-h-screen bg-base-300 flex items-center justify-center'>
@@ -13,16 +26,17 @@ function ImportPlaceholder() {
 
 					<button
 						className='btn btn-primary mt-4'
-						onClick={() =>
-							(
-								document.getElementById("uploadFormModal") as HTMLDialogElement
-							)?.showModal()
-						}
+						onClick={openUploadFormModal}
 					>
 						Open Form Modal
 					</button>
 
-					<dialog id='uploadFormModal' className='modal'>
+					<dialog
+						ref={uploadFormModal}
+						id='uploadFormModal'
+						className='modal'
+						onClose={resetUploadForm}
+					>
 						<div className=' flex flex-col modal-box h-10/12 w-15/10'>
 							<form method='dialog'>
 								{/* if there is a button in form, it will close the modal */}
