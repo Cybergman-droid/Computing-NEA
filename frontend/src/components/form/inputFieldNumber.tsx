@@ -1,14 +1,9 @@
-type NumberInputFieldProps = {
-	placeholderString: string;
-};
+import { type ComponentProps } from "react";
+type NumberInputFieldProps = {} & ComponentProps<"input">;
 
-function NumberInputField({ placeholderString }: NumberInputFieldProps) {
+function NumberInputField({ ...props }: NumberInputFieldProps) {
 	return (
-		<input
-			className='input input-warning w-full'
-			type='number'
-			placeholder={placeholderString}
-		/>
+		<input className='input input-warning w-full' {...props} type='number' />
 	);
 }
 

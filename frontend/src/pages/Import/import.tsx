@@ -23,7 +23,7 @@ function ImportPlaceholder() {
 					</button>
 
 					<dialog id='uploadFormModal' className='modal'>
-						<div className='modal-box h-8/12 w-5/10'>
+						<div className=' flex flex-col modal-box h-10/12 w-15/10'>
 							<form method='dialog'>
 								{/* if there is a button in form, it will close the modal */}
 								<button className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'>

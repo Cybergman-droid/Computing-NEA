@@ -3,7 +3,7 @@ type DropdownProps = {
 	dropdownOptions: string[];
 };
 
-// dropdown menu that displays options dynamiclly from an array that is passed as a prop that will be displayed on the form
+// dropdown menu that displays options dynamiclly from an array
 function DropdownMenu({ defaultOption, dropdownOptions }: DropdownProps) {
 	return (
 		<select
