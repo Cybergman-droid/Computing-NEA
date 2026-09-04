@@ -1,26 +1,23 @@
+import { type ComponentProps } from "react";
 type TextInputFieldProps = {
-	placeholderString: string;
 	variant?: string;
-};
+} & ComponentProps<"input"> &
+	ComponentProps<"textarea">;
 
-function TextInputField({ placeholderString, variant }: TextInputFieldProps) {
+function TextInputField({ variant, ...props }: TextInputFieldProps) {
 	switch (variant) {
 		case "transactionDescription":
 			return (
 				<textarea
 					className='textarea textarea-info w-full h-30 resize-none'
-					placeholder={placeholderString}
+					{...props}
 				></textarea>
 			);
 			break;
 
 		default:
 			return (
-				<input
-					className='input input-info w-full'
-					type='text'
-					placeholder={placeholderString}
-				/>
+				<input className='input input-info w-full' type='text' {...props} />
 			);
 			break;
 	}

@@ -1,16 +1,13 @@
+import { type ComponentProps } from "react";
 type DropdownProps = {
-	defaultOption: string;
 	dropdownOptions: string[];
-};
+} & ComponentProps<"select">;
 
 // dropdown menu that displays options dynamiclly from an array
-function DropdownMenu({ defaultOption, dropdownOptions }: DropdownProps) {
+function DropdownMenu({ dropdownOptions, ...props }: DropdownProps) {
 	return (
-		<select
-			defaultValue={defaultOption}
-			className='select select-neutral w-full'
-		>
-			<option disabled={true}>{defaultOption}</option>
+		<select {...props} className='select select-neutral w-full'>
+			<option disabled={true}>{props.defaultValue}</option>
 
 			{dropdownOptions.map((dropdownOption) => (
 				<option key={dropdownOption} value={dropdownOption}>
