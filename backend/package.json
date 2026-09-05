@@ -1,18 +1,26 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "better-sqlite3": "^12.10.0",
-    "cors": "^2.8.6",
-    "express": "^5.2.1"
-  }
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "tsx watch db.ts",
+		"start": "tsx db.ts",
+		"typecheck": "tsc --noEmit",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"dependencies": {
+		"better-sqlite3": "^12.10.0",
+		"cors": "^2.8.6",
+		"express": "^5.2.1"
+	},
+	"devDependencies": {
+		"@types/node": "^26.4.1",
+		"tsx": "^4.23.13",
+		"typescript": "^7.0.2"
+	}
 }
