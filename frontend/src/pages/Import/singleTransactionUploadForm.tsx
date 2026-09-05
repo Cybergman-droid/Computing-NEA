@@ -28,6 +28,9 @@ const categoryDropdownOptions = [
 ];
 const transactionTypeOptions = ["Deposit", "Withdrawal"];
 
+/* Takes in a payload of the data inputed in the transaction form and validates it, 
+Returns a valid transaction object if it passes */
+
 function transactionFormValidation(
 	payload: Record<string, FormDataEntryValue>,
 ): Transaction {
@@ -56,7 +59,8 @@ function transactionFormValidation(
 	if (!Number.isFinite(transactionAmount) || transactionAmount <= 0) {
 		throw new Error("Amount must be a positive number");
 	}
-	console.log();
+
+	// validates that the year inputted is not greater then the current year
 	if (
 		Number.isNaN(transactionDate.getTime()) ||
 		transactionDate.getFullYear() > currentYear
