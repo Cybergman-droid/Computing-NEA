@@ -82,7 +82,6 @@ function transactionFormValidation(
 
 function handleSubmit(e: FormEvent<HTMLFormElement>) {
 	e.preventDefault();
-
 	const payload = Object.fromEntries(new FormData(e.currentTarget));
 
 	try {
