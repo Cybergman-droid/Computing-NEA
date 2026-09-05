@@ -12,6 +12,8 @@ type Transaction = {
 	transactionAmount: number;
 	transactionCategory: string;
 	transactionDate: Date;
+	confidence: number;
+	autoClassified: boolean;
 };
 
 const categoryDropdownOptions = [
@@ -68,13 +70,15 @@ function transactionFormValidation(
 		throw new Error("Invalid transaction date");
 	}
 
-	const transaction = {
+	const transaction: Transaction = {
 		transactionName,
 		transactionDescription,
 		transactionType: transactionType as Transaction["transactionType"],
 		transactionAmount,
 		transactionCategory,
 		transactionDate,
+		confidence: 1,
+		autoClassified: false,
 	};
 
 	return transaction;
