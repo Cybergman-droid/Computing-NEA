@@ -2,38 +2,40 @@ import Database from "better-sqlite3";
 
 const transactionTableInitStatement = `
     CREATE TABLE IF NOT EXISTS transactions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    description TEXT,
-    category TEXT NOT NULL,
-    amount REAL NOT NULL,
-    date TEXT NOT NULL,
-    confidence INT,
-    auto_classified BOOL   
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        amount REAL NOT NULL,
+        category TEXT NOT NULL,
+        description TEXT NOT NULL,
+        date TEXT NOT NULL,
+        confidence INT NOT NULL,
+        auto_classified BOOL NOT NULL
     );
 `;
 
 const budgetsTableInitStatement = `
     CREATE TABLE IF NOT EXISTS budgets (
-    category TEXT NOT NULL,
-    monthly_limit REAL NOT NULL
+        category TEXT NOT NULL,
+        monthly_limit REAL NOT NULL
     );
 `;
+
 const wordCountsTableInitStatement = `
     CREATE TABLE IF NOT EXISTS word_counts (
-    word TEXT NOT NULL,
-    category TEXT NOT NULL,
-    count INT NOT NULL
-)
+        word TEXT NOT NULL,
+        category TEXT NOT NULL,
+        count INT NOT NULL,
+        UNIQUE(word, category)
+    );
 `;
+
 const importLogTableInitStatement = `
     CREATE TABLE IF NOT EXISTS import_log (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date TEXT NOT NULL,
-    filename TEXT NOT NULL,
-    imported REAL NOT NULL,
-    skipped REAL NOT NULL
-    )
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date TEXT NOT NULL,
+        filename TEXT NOT NULL,
+        imported REAL NOT NULL,
+        skipped REAL NOT NULL
+    );
 `;
 
 // An array of objects that links the corect table to its init statement
@@ -47,6 +49,7 @@ const tableInitStatements: string[] = [
 // Creates the tables in the database
 function createTables(tableInitStatements: string[], db: any) {
 	for (let initStatement of tableInitStatements) {
+		console.log("Running SQL:", initStatement);
 		db.exec(initStatement);
 	}
 	console.log("Tables created");

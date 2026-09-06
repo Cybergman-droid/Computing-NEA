@@ -1,9 +1,9 @@
 export interface Transaction {
-	name: string;
-	description?: string;
-	category: string;
+	id?: number;
 	amount: number;
+	category: string;
+	description: string;
 	date: string;
-	confidence: number;
-	autoClassified: boolean;
+	confidence?: number;
+	autoClassified: boolean; // your code uses boolean
 }
