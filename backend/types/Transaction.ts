@@ -3,7 +3,7 @@ export interface Transaction {
 	description?: string;
 	category: string;
 	amount: number;
-	transactionType: string;
-	bankName: string;
 	date: string;
+	confidence: number;
+	autoClassified: boolean;
 }
