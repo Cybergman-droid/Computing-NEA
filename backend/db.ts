@@ -1,8 +1,5 @@
 import Database from "better-sqlite3";
 
-// Creates a new database object
-const db = new Database("fintrack.db", { verbose: console.log });
-
 const transactionTableInitStatement = `
     CREATE TABLE IF NOT EXISTS transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -10,25 +7,57 @@ const transactionTableInitStatement = `
     description TEXT,
     category TEXT NOT NULL,
     amount REAL NOT NULL,
-    transactionType TEXT NOT NULL,
-    bankName TEXT NOT NULL,
-    date TEXT NOT NULL
+    date TEXT NOT NULL,
+    confidence INT,
+    auto_classified BOOL   
     );
 `;
 
+const budgetsTableInitStatement = `
+    CREATE TABLE IF NOT EXISTS budgets (
+    category TEXT NOT NULL,
+    monthly_limit REAL NOT NULL
+    );
+`;
+const wordCountsTableInitStatement = `
+    CREATE TABLE IF NOT EXISTS word_counts (
+    word TEXT NOT NULL,
+    category TEXT NOT NULL,
+    count INT NOT NULL
+)
+`;
+const importLogTableInitStatement = `
+    CREATE TABLE IF NOT EXISTS import_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
+    filename TEXT NOT NULL,
+    imported REAL NOT NULL,
+    skipped REAL NOT NULL
+    )
+`;
+
 // An array of objects that links the corect table to its init statement
-const tableInitStatements: Record<string, string>[] = [
-	{ transactionTable: transactionTableInitStatement },
+const tableInitStatements: string[] = [
+	transactionTableInitStatement,
+	budgetsTableInitStatement,
+	wordCountsTableInitStatement,
+	importLogTableInitStatement,
 ];
 
 // Creates the tables in the database
-function createTables(tableInitStatements: Record<string, string>[]) {
-	for (let table of tableInitStatements) {
-		db.exec(table.transactionTable);
+function createTables(tableInitStatements: string[], db: any) {
+	for (let initStatement of tableInitStatements) {
+		db.exec(initStatement);
 	}
+	console.log("Tables created");
 }
 
-createTables(tableInitStatements);
+// Creates a new database object
+function initDb() {
+	console.log("db.ts is initialising");
+	const db = new Database("fintrack.db", { verbose: console.log });
+	createTables(tableInitStatements, db);
+	return db;
+}
 
-// Exports the database object for use in other parts of the app
-export default db;
+export default initDb;
