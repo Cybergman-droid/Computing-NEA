@@ -17,8 +17,8 @@ type ParsedTransaction = {
 	amount: number;
 	category: string;
 	description: string;
-	date: string;
-	confidence: null;
+	date: Date;
+	confidence: 0;
 	autoClassified: boolean;
 };
 type ValidatedTransaction = {
@@ -99,14 +99,13 @@ function transactionFormParser(
 			? validatedTransaction.amount
 			: 0 - validatedTransaction.amount;
 
-	const parsedDate = validatedTransaction.date.toISOString().split("T")[0];
 	const parsedTransation: ParsedTransaction = {
 		amount: parsedAmount,
 		category: validatedTransaction.category,
 		description: validatedTransaction.description,
-		date: parsedDate,
+		date: validatedTransaction.date,
 		autoClassified: false,
-		confidence: null,
+		confidence: 0,
 	};
 
 	return parsedTransation;

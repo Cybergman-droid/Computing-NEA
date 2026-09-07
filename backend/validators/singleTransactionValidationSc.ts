@@ -1,0 +1,23 @@
+import { body } from "express-validator";
+
+export const singleTransactionValidator = [
+	body("amount").isFloat().withMessage("Amount must be a number"),
+
+	body("category").isString().notEmpty().withMessage("category is required"),
+
+	body("description")
+		.isString()
+		.notEmpty()
+		.withMessage("Description is required"),
+
+	body("date").isISO8601().withMessage("Date must be a valid ISO date"),
+
+	body("confidence")
+		.optional()
+		.isInt({ min: 0, max: 100 })
+		.withMessage("Confidence must be between 0 and 100"),
+
+	body("autoClassified")
+		.isBoolean()
+		.withMessage("auto_classified must be true or false"),
+];
