@@ -5,14 +5,6 @@ import SubmitButton from "../../components/form/submitButton.tsx";
 import DateInputField from "../../components/form/inputFieldDate.tsx";
 import type { FormEvent } from "react";
 
-type FormTransaction = {
-	transactionAmount: number;
-	transactionCategory: string;
-	transactionDescription: string;
-	transactionType: "Deposit" | "Withdrawal";
-	transactionDate: Date;
-};
-
 type ParsedTransaction = {
 	amount: number;
 	category: string;

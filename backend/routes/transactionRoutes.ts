@@ -9,27 +9,13 @@ export type NewTransaction = {
 	category: string;
 	description: string;
 	date: string;
-	confidence: null;
+	confidence: 0;
 	autoClassified: boolean;
 };
-type ValidatedTransaction = NewTransaction;
 
 export default function createTransactionRoutes(db: Database) {
 	// Defines the endpoints for the transactions
 	const router = Router();
-
-	const categoryDropdownOptions = [
-		"Groceries",
-		"Transport",
-		"Eating Out",
-		"Shopping",
-		"Entertainment",
-		"Utilities",
-		"Income",
-		"Savings",
-		"Subscriptions",
-		"Miscellaneous",
-	];
 
 	// Post route to send the transaction data to the backend
 	router.post(

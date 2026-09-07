@@ -1,9 +1,25 @@
 import { body } from "express-validator";
 
+const categoryDropdownOptions = [
+	"Groceries",
+	"Transport",
+	"Eating Out",
+	"Shopping",
+	"Entertainment",
+	"Utilities",
+	"Income",
+	"Savings",
+	"Subscriptions",
+	"Miscellaneous",
+];
 export const singleTransactionValidator = [
 	body("amount").isFloat().withMessage("Amount must be a number"),
 
-	body("category").isString().notEmpty().withMessage("category is required"),
+	body("category")
+		.isString()
+		.notEmpty()
+		.isIn(categoryDropdownOptions)
+		.withMessage("Valid category is required"),
 
 	body("description")
 		.isString()
