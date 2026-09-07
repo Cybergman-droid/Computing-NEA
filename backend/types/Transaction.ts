@@ -4,6 +4,6 @@ export interface Transaction {
 	category: string;
 	description: string;
 	date: string;
-	confidence?: number;
-	autoClassified: boolean; // your code uses boolean
+	confidence: number | null;
+	autoClassified: boolean;
 }

@@ -5,17 +5,29 @@ import SubmitButton from "../../components/form/submitButton.tsx";
 import DateInputField from "../../components/form/inputFieldDate.tsx";
 import type { FormEvent } from "react";
 
-type Transaction = {
-	transactionName: string;
-	transactionDescription: string;
-	transactionType: "Deposit" | "Withdrawal";
+type FormTransaction = {
 	transactionAmount: number;
 	transactionCategory: string;
+	transactionDescription: string;
+	transactionType: "Deposit" | "Withdrawal";
 	transactionDate: Date;
-	confidence: number;
-	autoClassified: boolean;
 };
 
+type ParsedTransaction = {
+	amount: number;
+	category: string;
+	description: string;
+	date: string;
+	confidence: null;
+	autoClassified: boolean;
+};
+type ValidatedTransaction = {
+	amount: number;
+	category: string;
+	type: string;
+	description: string;
+	date: Date;
+};
 const categoryDropdownOptions = [
 	"Groceries",
 	"Transport",
@@ -35,19 +47,16 @@ Returns a valid transaction object if it passes */
 
 function transactionFormValidation(
 	payload: Record<string, FormDataEntryValue>,
-): Transaction {
-	const transactionName = String(payload.transactionName).trim();
-	const transactionDescription = String(
-		payload.transactionDescription ?? "",
-	).trim();
+): ValidatedTransaction {
+	const transactionDescription = String(payload.transactionDescription).trim();
 	const transactionType = String(payload.transactionType);
 	const transactionCategory = String(payload.transactionCategory);
 	const transactionAmount = Number(payload.transactionAmount);
 	const transactionDate = new Date(String(payload.transactionDate));
 	const currentYear = new Date().getFullYear();
 
-	if (!transactionName) {
-		throw new Error("Transaction name is required");
+	if (!transactionDescription) {
+		throw new Error("Transaction description is required");
 	}
 
 	if (!transactionTypeOptions.includes(transactionType)) {
@@ -70,27 +79,66 @@ function transactionFormValidation(
 		throw new Error("Invalid transaction date");
 	}
 
-	const transaction: Transaction = {
-		transactionName,
-		transactionDescription,
-		transactionType: transactionType as Transaction["transactionType"],
-		transactionAmount,
-		transactionCategory,
-		transactionDate,
-		confidence: 1,
-		autoClassified: false,
+	const transaction: ValidatedTransaction = {
+		amount: transactionAmount,
+		type: transactionType,
+		category: transactionCategory,
+		description: transactionDescription,
+		date: transactionDate,
 	};
 
 	return transaction;
 }
 
-function handleSubmit(e: FormEvent<HTMLFormElement>) {
+// parses the validated form data in to the format the backend expects
+function transactionFormParser(
+	validatedTransaction: ValidatedTransaction,
+): ParsedTransaction {
+	const parsedAmount =
+		validatedTransaction.type === "Deposit"
+			? validatedTransaction.amount
+			: 0 - validatedTransaction.amount;
+
+	const parsedDate = validatedTransaction.date.toISOString().split("T")[0];
+	const parsedTransation: ParsedTransaction = {
+		amount: parsedAmount,
+		category: validatedTransaction.category,
+		description: validatedTransaction.description,
+		date: parsedDate,
+		autoClassified: false,
+		confidence: null,
+	};
+
+	return parsedTransation;
+}
+
+async function handleSubmit(e: FormEvent<HTMLFormElement>) {
 	e.preventDefault();
 	const payload = Object.fromEntries(new FormData(e.currentTarget));
+	console.log("payload");
+	console.log(payload);
 
 	try {
-		const transaction: Transaction = transactionFormValidation(payload);
-		console.log(transaction);
+		//validates the transaction
+		const validatedTransaction: ValidatedTransaction =
+			transactionFormValidation(payload);
+		console.log(`Validated transaction`);
+		console.log(validatedTransaction);
+
+		// parses the transaction into the format expacteed by the backend
+		const parsedTransaction: ParsedTransaction =
+			transactionFormParser(validatedTransaction);
+		console.log(`Parsed transaction `);
+		console.log(parsedTransaction);
+
+		// sends a POST request to the backend containing the parsed transaction object
+		await fetch("http://localhost:3000/api/transactions", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			mode: "cors",
+			body: JSON.stringify(parsedTransaction),
+		});
+		// catchs any errors that the validator throws
 	} catch (error) {
 		console.error(error);
 		window.alert(error);
@@ -100,21 +148,17 @@ function handleSubmit(e: FormEvent<HTMLFormElement>) {
 function SingleTransactionUploadForm() {
 	return (
 		<>
-			<p className='justify-self-center text-3xl font-bold mb-15'>
+			<p className='justify-self-center text-3xl font-bold mb-5'>
 				Enter the information for a single transaction
 			</p>
 
 			<form id='transactionForm' onSubmit={handleSubmit}>
 				<div className='flex flex-col gap-6'>
 					<TextInputField
-						placeholder='Transaction Name'
-						name='transactionName'
-						required={true}
-					/>
-					<TextInputField
-						placeholder='Transaction Description (optional)'
+						placeholder='Transaction Description'
 						variant='transactionDescription'
 						name='transactionDescription'
+						required={true}
 					/>
 
 					<div className='flex justify-between gap-6'>

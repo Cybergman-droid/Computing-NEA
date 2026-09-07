@@ -7,7 +7,7 @@ const transactionTableInitStatement = `
         category TEXT NOT NULL,
         description TEXT NOT NULL,
         date TEXT NOT NULL,
-        confidence INT NOT NULL,
+        confidence INT ,
         auto_classified BOOL NOT NULL
     );
 `;
