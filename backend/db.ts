@@ -38,7 +38,7 @@ const importLogTableInitStatement = `
     );
 `;
 
-// An array of objects that links the corect table to its init statement
+// An array of table init statements
 const tableInitStatements: string[] = [
 	transactionTableInitStatement,
 	budgetsTableInitStatement,
@@ -55,7 +55,7 @@ function createTables(tableInitStatements: string[], db: any) {
 	console.log("Tables created");
 }
 
-// Creates a new database object
+// Creates a new database object and returns it so that it can be used by the server
 function initDb() {
 	console.log("db.ts is initialising");
 	const db = new Database("fintrack.db", { verbose: console.log });

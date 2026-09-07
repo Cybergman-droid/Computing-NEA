@@ -1,5 +1,7 @@
+import { Database } from "better-sqlite3";
 import { Router } from "express";
 
-const router = Router();
-
-export default router;
+export default function createBudgetsRoutes(db: Database) {
+	const budgetRouter = Router();
+	return budgetRouter;
+}

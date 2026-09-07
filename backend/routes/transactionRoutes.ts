@@ -1,5 +1,4 @@
 import { type Request, type Response, Router } from "express";
-import { Transaction } from "../types/Transaction";
 import { validationResult } from "express-validator";
 import { singleTransactionValidator } from "../validators/singleTransactionValidationSc";
 import { Database } from "better-sqlite3";
@@ -13,17 +12,19 @@ export type NewTransaction = {
 	autoClassified: boolean;
 };
 
+// Creates the transaction endpoints that requests will be sent
+// Includes a database connection to intractions with the database
 export default function createTransactionRoutes(db: Database) {
-	// Defines the endpoints for the transactions
-	const router = Router();
+	const transactionRouter = Router();
 
-	// Post route to send the transaction data to the backend
-	router.post(
+	// POST route to send the transaction data to the backend
+	transactionRouter.post(
 		"/",
-		singleTransactionValidator,
+		singleTransactionValidator, // Validates the data sent bafore it is inserted into the database
 		(request: Request, response: Response) => {
 			const errors = validationResult(request);
 
+			//If the transaction doesnt match the schema the it is rejected
 			if (!errors.isEmpty()) {
 				console.log(errors.array());
 				return response.status(400).json({ errors: errors.array() });
@@ -32,6 +33,7 @@ export default function createTransactionRoutes(db: Database) {
 			const newTransaction: NewTransaction = request.body;
 			console.log(newTransaction);
 
+			// If there are no errors the transaction is inserted into the database
 			const transactionInsertStatement = `
                 INSERT INTO transactions
                 (amount, category, description, date, confidence, auto_classified)
@@ -50,5 +52,5 @@ export default function createTransactionRoutes(db: Database) {
 			response.status(201).json({ id: result.lastInsertRowid });
 		},
 	);
-	return router;
+	return transactionRouter;
 }

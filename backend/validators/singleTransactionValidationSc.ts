@@ -12,6 +12,8 @@ const categoryDropdownOptions = [
 	"Subscriptions",
 	"Miscellaneous",
 ];
+
+// Defines the checks that will be run on the transaction object that is sent
 export const singleTransactionValidator = [
 	body("amount").isFloat().withMessage("Amount must be a number"),
 

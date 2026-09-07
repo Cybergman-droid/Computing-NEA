@@ -82,7 +82,7 @@ function transactionFormValidation(
 	return transaction;
 }
 
-// parses the validated form data in to the format the backend expects
+// Parses the validated form data in to the format the backend expects
 function transactionFormParser(
 	validatedTransaction: ValidatedTransaction,
 ): ParsedTransaction {
