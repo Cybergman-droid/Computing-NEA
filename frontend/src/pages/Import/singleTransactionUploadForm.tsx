@@ -129,6 +129,7 @@ function SingleTransactionUploadForm({
 			console.log(`Parsed transaction `);
 			console.log(parsedTransaction);
 
+			// TODO make sure the server is running before sending the POST request
 			// sends a POST request to the backend containing the parsed transaction object
 			const response = await fetch("http://localhost:3000/api/transactions", {
 				method: "POST",
