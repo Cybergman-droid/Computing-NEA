@@ -32,7 +32,7 @@ export const singleTransactionValidator = [
 
 	body("confidence")
 		.optional()
-		.isInt({ min: 0, max: 100 })
+		.isFloat({ min: 0, max: 100 })
 		.withMessage("Confidence must be between 0 and 100"),
 
 	body("autoClassified")

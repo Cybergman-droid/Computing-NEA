@@ -2,6 +2,7 @@ import { type Request, type Response, Router } from "express";
 import { validationResult } from "express-validator";
 import { singleTransactionValidator } from "../validators/singleTransactionValidationSc";
 import { Database } from "better-sqlite3";
+import { request } from "http";
 
 export type NewTransaction = {
 	amount: number;
@@ -27,13 +28,11 @@ export default function createTransactionRoutes(db: Database) {
 			//If the transaction doesnt match the schema the it is rejected
 			if (!errors.isEmpty()) {
 				console.log(errors.array());
-				return response
-					.status(400)
-					.json({
-						errors: errors.array(),
-						message:
-							"Sorry Transaction was not able to be uploaded. Please try again.",
-					});
+				return response.status(400).json({
+					errors: errors.array(),
+					message:
+						"Sorry Transaction was not able to be uploaded. Please try again.",
+				});
 			}
 
 			const newTransaction: NewTransaction = request.body;
@@ -55,13 +54,22 @@ export default function createTransactionRoutes(db: Database) {
 					newTransaction.confidence,
 					newTransaction.autoClassified ? 1 : 0,
 				);
-			response
-				.status(201)
-				.json({
-					id: result.lastInsertRowid,
-					message: "Transaction was uploaded succesfully",
-				});
+			response.status(201).json({
+				id: result.lastInsertRowid,
+				message: "Transaction was uploaded succesfully",
+			});
 		},
 	);
+
+	transactionRouter.get("/", (request: Request, response: Response) => {
+		try {
+			const transactionSelectAllStament = `SELECT * FROM transactions`;
+			const transactions = db.prepare(transactionSelectAllStament).all();
+			response.status(200).json(transactions);
+		} catch (error) {
+			console.log(error);
+			response.status(500).json({ message: "Failed to fetch transactions" });
+		}
+	});
 	return transactionRouter;
 }
