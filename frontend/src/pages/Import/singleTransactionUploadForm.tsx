@@ -103,40 +103,54 @@ function transactionFormParser(
 	return parsedTransation;
 }
 
-async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-	e.preventDefault();
-	const payload = Object.fromEntries(new FormData(e.currentTarget));
-	console.log("payload");
-	console.log(payload);
-
-	try {
-		//validates the transaction
-		const validatedTransaction: ValidatedTransaction =
-			transactionFormValidation(payload);
-		console.log(`Validated transaction`);
-		console.log(validatedTransaction);
-
-		// parses the transaction into the format expacteed by the backend
-		const parsedTransaction: ParsedTransaction =
-			transactionFormParser(validatedTransaction);
-		console.log(`Parsed transaction `);
-		console.log(parsedTransaction);
-
-		// sends a POST request to the backend containing the parsed transaction object
-		await fetch("http://localhost:3000/api/transactions", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			mode: "cors",
-			body: JSON.stringify(parsedTransaction),
-		});
-		// catchs any errors that the validator throws
-	} catch (error) {
-		console.error(error);
-		window.alert(error);
-	}
+interface SingleTransactionUploadFormProps {
+	onTransactionPost: (response: Response | unknown) => void;
 }
 
-function SingleTransactionUploadForm() {
+function SingleTransactionUploadForm({
+	onTransactionPost,
+}: SingleTransactionUploadFormProps) {
+	async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const payload = Object.fromEntries(new FormData(e.currentTarget));
+		console.log("payload");
+		console.log(payload);
+
+		try {
+			//validates the transaction
+			const validatedTransaction: ValidatedTransaction =
+				transactionFormValidation(payload);
+			console.log(`Validated transaction`);
+			console.log(validatedTransaction);
+
+			// parses the transaction into the format expacteed by the backend
+			const parsedTransaction: ParsedTransaction =
+				transactionFormParser(validatedTransaction);
+			console.log(`Parsed transaction `);
+			console.log(parsedTransaction);
+
+			// sends a POST request to the backend containing the parsed transaction object
+			const response = await fetch("http://localhost:3000/api/transactions", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				mode: "cors",
+				body: JSON.stringify(parsedTransaction),
+			});
+
+			if (onTransactionPost) {
+				console.log(response);
+				onTransactionPost(response);
+			}
+			// catchs any errors that the validator throws
+		} catch (error) {
+			if (onTransactionPost) {
+				console.log(error);
+				onTransactionPost(error);
+			}
+			console.error(error);
+		}
+	}
+
 	return (
 		<>
 			<p className='justify-self-center text-3xl font-bold mb-5'>

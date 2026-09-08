@@ -1,12 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import SingleTransactionUploadForm from "./singleTransactionUploadForm";
+import TransactionFeedback from "../../components/form/formFeedback";
 
 type UploadFormModalProps = {
 	onClose: () => void;
 };
 
 function UploadFormModal({ onClose }: UploadFormModalProps) {
+	const [showForm, setShowForm] = useState(true);
+	const [transactionResponse, setTransactionResponse] = useState<unknown>(null);
+
 	const uploadFormModal = useRef<HTMLDialogElement>(null);
 
 	useEffect(() => {
@@ -20,6 +24,13 @@ function UploadFormModal({ onClose }: UploadFormModalProps) {
 			document.getElementById("transactionForm") as HTMLFormElement | null
 		)?.reset();
 		onClose();
+	};
+
+	const handleApiResponse = (response: Response | unknown) => {
+		console.log(`Response recieved from transaction form:`);
+		console.log(response);
+		setShowForm(false);
+		setTransactionResponse(response);
 	};
 
 	return (
@@ -37,7 +48,11 @@ function UploadFormModal({ onClose }: UploadFormModalProps) {
 					</button>
 				</form>
 
-				<SingleTransactionUploadForm />
+				{showForm ? (
+					<SingleTransactionUploadForm onTransactionPost={handleApiResponse} />
+				) : (
+					<TransactionFeedback response={transactionResponse} />
+				)}
 			</div>
 		</dialog>
 	);

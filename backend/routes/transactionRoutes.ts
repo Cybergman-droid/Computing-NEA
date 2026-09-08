@@ -27,7 +27,13 @@ export default function createTransactionRoutes(db: Database) {
 			//If the transaction doesnt match the schema the it is rejected
 			if (!errors.isEmpty()) {
 				console.log(errors.array());
-				return response.status(400).json({ errors: errors.array() });
+				return response
+					.status(400)
+					.json({
+						errors: errors.array(),
+						message:
+							"Sorry Transaction was not able to be uploaded. Please try again.",
+					});
 			}
 
 			const newTransaction: NewTransaction = request.body;
@@ -49,7 +55,12 @@ export default function createTransactionRoutes(db: Database) {
 					newTransaction.confidence,
 					newTransaction.autoClassified ? 1 : 0,
 				);
-			response.status(201).json({ id: result.lastInsertRowid });
+			response
+				.status(201)
+				.json({
+					id: result.lastInsertRowid,
+					message: "Transaction was uploaded succesfully",
+				});
 		},
 	);
 	return transactionRouter;
