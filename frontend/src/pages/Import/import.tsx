@@ -1,0 +1,32 @@
+import { useState } from "react";
+import UploadFormModal from "./uploadFormModal.tsx";
+
+function ImportPlaceholder() {
+	const [showFormModal, setShowFormModal] = useState(false);
+	const handleClick = () => {
+		setShowFormModal(true);
+	};
+	return (
+		<div className='bg-base-300'>
+			<div className='min-h-screen bg-base-300 flex items-center justify-center'>
+				<div className='card bg-base-200 shadow-xl p-8'>
+					<h1 className='text-3xl font-bold text-primary mb-4'>
+						Finance Dashboard
+					</h1>
+
+					<p className='text-base-content'>Import Page</p>
+
+					<button className='btn btn-primary mt-4' onClick={handleClick}>
+						Open Form Modal
+					</button>
+
+					{showFormModal && (
+						<UploadFormModal onClose={() => setShowFormModal(false)} />
+					)}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export default ImportPlaceholder;
