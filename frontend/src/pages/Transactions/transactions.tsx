@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 
 function TransactionsPlaceholder() {
 	const [data, setData] = useState<any>(null);
+	// Function that sends a GET request to the backend to retrieve transactions
 	async function getAllTransactions() {
 		try {
-			const response = await fetch(`http://localhost:3000/api/transactions`);
+			// GET request to the backend
+			const response = await fetch("http://localhost:3000/api/transactions", {
+				method: "GET",
+			});
 
 			if (!response.ok) {
 				throw new Error(`HTTP error status ${response.status}`);
@@ -19,6 +23,7 @@ function TransactionsPlaceholder() {
 		}
 	}
 
+	// Runs the function to get all transactions when the page is navigated to
 	useEffect(() => {
 		async function load() {
 			await getAllTransactions();
@@ -34,6 +39,7 @@ function TransactionsPlaceholder() {
 						Finance Dashboard
 					</h1>
 					<p className='text-base-content'>Transactions Page</p>
+					{/* Outputs the data on the page */}
 					<pre className='text-base-content'>
 						{JSON.stringify(data, null, 2)}
 					</pre>

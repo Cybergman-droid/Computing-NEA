@@ -2,7 +2,6 @@ import { type Request, type Response, Router } from "express";
 import { validationResult } from "express-validator";
 import { singleTransactionValidator } from "../validators/singleTransactionValidationSc";
 import { Database } from "better-sqlite3";
-import { request } from "http";
 
 export type NewTransaction = {
 	amount: number;
@@ -61,12 +60,15 @@ export default function createTransactionRoutes(db: Database) {
 		},
 	);
 
+	// GET route to send the transactions data to the frontend
 	transactionRouter.get("/", (request: Request, response: Response) => {
 		try {
+			// Selects all the transactions from the database and sends the data to the frontend
 			const transactionSelectAllStament = `SELECT * FROM transactions`;
 			const transactions = db.prepare(transactionSelectAllStament).all();
 			response.status(200).json(transactions);
 		} catch (error) {
+			// Sends an error to the frontend if the data could not be fetched from the database
 			console.log(error);
 			response.status(500).json({ message: "Failed to fetch transactions" });
 		}
