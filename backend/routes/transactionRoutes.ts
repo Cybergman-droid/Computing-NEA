@@ -40,8 +40,8 @@ export default function createTransactionRoutes(db: Database) {
 			// If there are no errors the transaction is inserted into the database
 			const transactionInsertStatement = `
                 INSERT INTO transactions
-                (amount, category, description, date, confidence, auto_classified)
-                VALUES (?, ?, ?, ?, ?, ?)
+                (amount, category, description, date, confidence, auto_classified,bank)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             `;
 			const result = db
 				.prepare(transactionInsertStatement)
@@ -52,6 +52,7 @@ export default function createTransactionRoutes(db: Database) {
 					newTransaction.date.split("T")[0],
 					newTransaction.confidence,
 					newTransaction.autoClassified ? 1 : 0,
+					null,
 				);
 			response.status(201).json({
 				id: result.lastInsertRowid,
