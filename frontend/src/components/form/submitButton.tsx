@@ -1,5 +1,5 @@
 import { type ComponentProps } from "react";
-type ButtonFieldProps = {} & ComponentProps<"button">;
+type ButtonFieldProps = ComponentProps<"button">;
 // Submit button dispalyed in the form to submit it
 function SubmitButton({ ...props }: ButtonFieldProps) {
 	return (

@@ -27,7 +27,7 @@ function NavbarButton({ children, focused }: ButtonProps): ReactElement {
 // Highlights the button based on the isActive prop which checks if the current url matches the path
 function Navbar() {
 	return (
-		<nav className='flex gap-10 justify-center'>
+		<nav className='flex flex-row gap-10 justify-center'>
 			{/* Defined the paths that the button will link to when pressed */}
 
 			<NavLink to='/'>
