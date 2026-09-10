@@ -13,7 +13,7 @@ function ImportPage() {
 
 	// All the content showed on the import page
 	return (
-		<div className='flex flex-col gap-10 pt-10'>
+		<div className='flex flex-col gap-10'>
 			<FileUploadArea />
 
 			<SingleTransactionUploadFormButton onClick={handleClick} />

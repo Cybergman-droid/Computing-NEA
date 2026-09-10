@@ -1,5 +1,6 @@
 import { type ComponentProps } from "react";
-type ButtonFieldProps = {} & ComponentProps<"button">;
+type ButtonFieldProps = ComponentProps<"button">;
+
 // Button to open the transaction upload form
 function SingleTransactionUploadFormButton({ ...props }: ButtonFieldProps) {
 	return (

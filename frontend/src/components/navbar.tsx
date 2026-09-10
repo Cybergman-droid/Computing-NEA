@@ -10,13 +10,13 @@ type ButtonProps = {
 function NavbarButton({ children, focused }: ButtonProps): ReactElement {
 	if (focused) {
 		return (
-			<button className='btn btn-focused btn-secondary rounded-3xl'>
+			<button className='btn btn-sm whitespace-nowrap btn-focused btn-secondary rounded-3xl sm:btn-md'>
 				{children}
 			</button>
 		);
 	} else {
 		return (
-			<button className='btn btn-outline btn-secondary rounded-3xl'>
+			<button className='btn btn-sm whitespace-nowrap btn-outline btn-secondary rounded-3xl sm:btn-md'>
 				{children}
 			</button>
 		);
@@ -27,7 +27,7 @@ function NavbarButton({ children, focused }: ButtonProps): ReactElement {
 // Highlights the button based on the isActive prop which checks if the current url matches the path
 function Navbar() {
 	return (
-		<nav className='flex flex-row gap-10 justify-center'>
+		<nav className='flex w-full flex-row flex-wrap items-center justify-center gap-2 px-3 py-4 sm:gap-4 sm:px-6 lg:gap-10'>
 			{/* Defined the paths that the button will link to when pressed */}
 
 			<NavLink to='/'>

@@ -27,9 +27,12 @@ function FileUploadArea() {
 				: "border-slate-600 bg-slate-900 text-slate-300 hover:border-cyan-400/70 hover:bg-slate-800"
 	}`;
 
-	// Will handle sending the file to the backend
+	// Will handle uploading the file to the backend
 	function handleFileUpload(file: File[]) {
-		if (!file) return;
+		if (!file) {
+			setStatus("error");
+			return;
+		}
 
 		setStatus("uploading");
 
@@ -47,6 +50,7 @@ function FileUploadArea() {
 	return (
 		<div {...getRootProps()} className={dropZoneStyles}>
 			<input {...getInputProps()} />
+			{/* Conditionally render a message depending on whether the file to be uploaded is valid or not */}
 			{isDragAccept && <p>✅ Drop to upload these files</p>}
 			{isDragReject && <p>❌ Some files will be rejected</p>}
 
