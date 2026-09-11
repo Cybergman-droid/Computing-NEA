@@ -7,18 +7,22 @@ type UploadFormModalProps = {
 	onClose: () => void;
 };
 
+// Modal which display the form and the feedback message after
 function UploadFormModal({ onClose }: UploadFormModalProps) {
 	const [showForm, setShowForm] = useState(true);
 	const [transactionResponse, setTransactionResponse] = useState<unknown>(null);
 
 	const uploadFormModal = useRef<HTMLDialogElement>(null);
 
+	// Runs once when the component is mounted and opens the dialog for the modal
 	useEffect(() => {
-		uploadFormModal.current?.showModal();
+		const modal = uploadFormModal.current;
+		modal?.showModal();
 
-		return () => uploadFormModal.current?.close();
+		return () => modal?.close();
 	}, []);
 
+	// Resets the modal when the form is closed
 	const resetUploadForm = () => {
 		(
 			document.getElementById("transactionForm") as HTMLFormElement | null
@@ -26,6 +30,8 @@ function UploadFormModal({ onClose }: UploadFormModalProps) {
 		onClose();
 	};
 
+	//  Callback function that is passed into the form
+	// Updates the states that track response from the backend (which allows the response to be passed into the feedback component) and whether to show the form
 	const handleApiResponse = (response: Response | unknown) => {
 		console.log(`Response recieved from transaction form:`);
 		console.log(response);
