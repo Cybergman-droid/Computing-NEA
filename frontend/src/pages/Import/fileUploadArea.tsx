@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import FileUploadResultModal from "./uploadFileModal";
+import FileUploadResultModal from "./uploadFileFeedbackModal";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
