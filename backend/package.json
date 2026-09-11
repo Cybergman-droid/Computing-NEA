@@ -15,10 +15,12 @@
 	"license": "ISC",
 	"type": "commonjs",
 	"dependencies": {
+		"@types/multer": "^2.2.0",
 		"better-sqlite3": "^12.11.1",
 		"cors": "^2.8.6",
 		"express": "^5.2.1",
-		"express-validator": "^7.3.2"
+		"express-validator": "^7.3.2",
+		"multer": "^2.3.0"
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "^9.6.0",

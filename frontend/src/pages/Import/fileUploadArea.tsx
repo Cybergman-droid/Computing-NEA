@@ -1,21 +1,30 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import FileUploadResultModal from "./uploadFileModal";
+
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
 function FileUploadArea() {
-	// Tracks the status of the file upload to give feedback to the user
+	// Tracks the status of the upload
 	const [status, setStatus] = useState<UploadStatus>("idle");
 
 	// Used react-dropzone to simplify the implemetation of the file upload zone
 	const { getRootProps, getInputProps, isDragAccept, isDragReject } =
 		useDropzone({
-			accept: { "text/csv": [] }, // Defines the only files that can be accepted
+			accept: {
+				"text/csv": [".csv"],
+				"application/vnd.ms-excel": [".csv"],
+				"application/octet-stream": [".csv"],
+			}, // Defines the only files that can be accepted
 			// Function that runs when a file is dropped into the zone
-			onDrop(acceptedFiles, fileRejections, event) {
+			async onDrop(acceptedFiles, fileRejections) {
 				console.log(acceptedFiles[0]);
 				console.log(fileRejections[0]);
-				console.log(event);
-				handleFileUpload(acceptedFiles);
+				if (acceptedFiles.length === 0) {
+					setStatus("error");
+					return;
+				}
+				await handleFileUpload(acceptedFiles);
 			},
 		});
 
@@ -27,36 +36,50 @@ function FileUploadArea() {
 				: "border-slate-600 bg-slate-900 text-slate-300 hover:border-cyan-400/70 hover:bg-slate-800"
 	}`;
 
-	// Will handle uploading the file to the backend
-	function handleFileUpload(file: File[]) {
-		if (!file) {
+	// Handle uploading the file to the backend
+	async function handleFileUpload(file: File[]) {
+		if (file.length === 0) {
 			setStatus("error");
 			return;
 		}
 
 		setStatus("uploading");
-
 		const formData = new FormData();
-		formData.append("file", file[0]);
+		formData.append("bankCsvFile", file[0]);
 
+		// Tries to send the file and catches any errors that may be thrown
 		try {
-			// TODO await fetch request to send data to the backend
+			const response = await fetch("/api/import", {
+				method: "POST",
+				mode: "cors",
+				body: formData,
+			});
+			if (!response.ok) {
+				throw new Error(`Upload failed with status ${response.status}`);
+			}
 			setStatus("success");
 		} catch (error) {
-			// TODO add error handling
+			console.error(error);
 			setStatus("error");
 		}
 	}
 	return (
-		<div {...getRootProps()} className={dropZoneStyles}>
-			<input {...getInputProps()} />
-			{/* Conditionally render a message depending on whether the file to be uploaded is valid or not */}
-			{isDragAccept && <p>✅ Drop to upload these files</p>}
-			{isDragReject && <p>❌ Some files will be rejected</p>}
+		<>
+			<div {...getRootProps()} className={dropZoneStyles}>
+				<input {...getInputProps()} />
+				{/* Conditionally render a message depending on whether the file to be uploaded is valid or not */}
+				{isDragAccept && <p>✅ Drop to upload these files</p>}
+				{isDragReject && <p>❌ Some files will be rejected</p>}
 
-			<p>Drag and drop your CSV file here.</p>
-			<p>Or click to browse.</p>
-		</div>
+				<p>Drag and drop your CSV file here.</p>
+				<p>Or click to browse.</p>
+			</div>
+			{/* Rendered when the upload id complete to give feedback to the user */}
+			<FileUploadResultModal
+				status={status}
+				onClose={() => setStatus("idle")}
+			/>
+		</>
 	);
 }
 

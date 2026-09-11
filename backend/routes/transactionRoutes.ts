@@ -13,7 +13,7 @@ export type NewTransaction = {
 };
 
 // Creates the transaction endpoints that requests will be sent
-// Includes a database connection to intractions with the database
+// Includes a database connection to interactions with the database
 export default function createTransactionRoutes(db: Database) {
 	const transactionRouter = Router();
 
