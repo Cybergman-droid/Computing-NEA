@@ -7,16 +7,17 @@ import ImportSummaryCard from "./importSummaryCard.tsx";
 function ImportPage() {
 	// Tracks whether the form should be rendered
 	const [showFormModal, setShowFormModal] = useState(false);
-	const handleClick = () => {
-		setShowFormModal(true);
-	};
 
 	// All the content showed on the import page
 	return (
 		<div className='flex flex-col gap-10'>
 			<FileUploadArea />
 
-			<SingleTransactionUploadFormButton onClick={handleClick} />
+			<SingleTransactionUploadFormButton
+				onClick={() => {
+					setShowFormModal(true);
+				}}
+			/>
 			{/* Conditionally renders the form based in the showFormModal variable*/}
 			{showFormModal && (
 				<UploadFormModal onClose={() => setShowFormModal(false)} />
