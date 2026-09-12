@@ -2,9 +2,17 @@ import { type ComponentProps } from "react";
 type ButtonFieldProps = ComponentProps<"button">;
 
 // Button to open the transaction upload form
-function SingleTransactionUploadFormButton({ ...props }: ButtonFieldProps) {
+function SingleTransactionUploadFormButton({
+	onClick,
+	...props
+}: ButtonFieldProps) {
 	return (
-		<button {...props} className='btn btn-outline btn-info'>
+		<button
+			{...props}
+			type='button'
+			onClick={(event) => onClick?.(event)}
+			className='btn btn-outline btn-info'
+		>
 			Upload a single Transaction
 		</button>
 	);

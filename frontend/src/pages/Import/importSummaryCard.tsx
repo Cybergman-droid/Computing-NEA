@@ -8,7 +8,10 @@ type ImportSummary = {
 	skipped: number;
 	date: string;
 };
-function ImportSummaryCard() {
+type ImportSummaryCardProps = {
+	reImportSummary: boolean;
+};
+function ImportSummaryCard({ reImportSummary }: ImportSummaryCardProps) {
 	const [data, setData] = useState<ImportSummary | null>(null);
 
 	// Function that sends a GET request to the backend to retrieve the import summary
@@ -39,7 +42,7 @@ function ImportSummaryCard() {
 			await getImportSummary();
 		}
 		load().catch(console.error);
-	}, []);
+	}, [reImportSummary]);
 
 	// Displays the data on the page
 	return (

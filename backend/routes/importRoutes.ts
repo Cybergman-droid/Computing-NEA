@@ -101,11 +101,24 @@ export default function createImportRoutes(db: Database) {
 			skipEmptyLines: true,
 			dynamicTyping: true,
 			complete: (results) => {
+				if (results.errors.length > 0) {
+					return response.status(400).json({
+						message: "The uploaded file is not a valid CSV.",
+					});
+				}
+
 				const parsedCsv = results.data;
 
 				const [parsedTransactions, numRowsSkipped, dateOfImport] =
 					barclaysParser(parsedCsv);
 				const numRowsImported = parsedTransactions.length;
+
+				if (numRowsImported === 0) {
+					return response.status(400).json({
+						message:
+							"No valid transactions were found. Check that this is a supported Barclays CSV.",
+					});
+				}
 
 				console.log("Parsed Transactions:", parsedTransactions);
 				console.log("number of rows skipped", numRowsSkipped);
