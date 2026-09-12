@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import SingleTransactionUploadForm from "./singleTransactionUploadForm";
 import TransactionFeedback from "../../components/form/formFeedback";
@@ -11,16 +11,6 @@ type UploadFormModalProps = {
 function UploadFormModal({ onClose }: UploadFormModalProps) {
 	const [showForm, setShowForm] = useState(true);
 	const [transactionResponse, setTransactionResponse] = useState<unknown>(null);
-
-	const uploadFormModal = useRef<HTMLDialogElement>(null);
-
-	// Runs once when the component is mounted and opens the dialog for the modal
-	useEffect(() => {
-		const modal = uploadFormModal.current;
-		modal?.showModal();
-
-		return () => modal?.close();
-	}, []);
 
 	// Resets the modal when the form is closed
 	const resetUploadForm = () => {
@@ -41,9 +31,9 @@ function UploadFormModal({ onClose }: UploadFormModalProps) {
 
 	return (
 		<dialog
-			ref={uploadFormModal}
 			id='uploadFormModal'
 			className='modal'
+			open
 			onClose={resetUploadForm}
 		>
 			<div className=' flex flex-col modal-box h-auto max-w-15/10'>
