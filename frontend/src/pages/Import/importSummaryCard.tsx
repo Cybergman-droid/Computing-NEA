@@ -36,7 +36,7 @@ function ImportSummaryCard({ reImportSummary }: ImportSummaryCardProps) {
 		}
 	}
 
-	// Runs the function to get the import log when the page is navigated to
+	// Runs the function to get the import log when the page is navigated to and anytime a new transaction is uploaded
 	useEffect(() => {
 		async function load() {
 			await getImportSummary();
