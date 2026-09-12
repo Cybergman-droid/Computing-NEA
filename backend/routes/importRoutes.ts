@@ -75,6 +75,7 @@ function barclaysParser(
 	}
 
 	const dateOfImport = new Date().toISOString();
+
 	return [normalizedTransactions, numRowsSkipped, dateOfImport];
 }
 
