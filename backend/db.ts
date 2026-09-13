@@ -13,6 +13,11 @@ const transactionTableInitStatement = `
     );
 `;
 
+// const normalizedTransactionsDateIndexInitStatement = `
+//     CREATE INDEX IF NOT EXISTS idx_normalized_transactions_date
+//     ON normalized_transactions_buffer (date);
+// `;
+
 const budgetsTableInitStatement = `
     CREATE TABLE IF NOT EXISTS budgets (
         category TEXT NOT NULL PRIMARY KEY,

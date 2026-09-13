@@ -7,6 +7,8 @@ function ImportPage() {
 	// Tracks whether the form should be rendered
 	const [showFormModal, setShowFormModal] = useState(false);
 	const [reImportSummary, setReImportSummary] = useState(false);
+
+	// Callback function to trigger a rerender of the import sumarry card
 	const handlePostResponse = (response: Response) => {
 		console.log(`Response recieved from file upload:`);
 		console.log(response);
