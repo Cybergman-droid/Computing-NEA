@@ -1,5 +1,8 @@
-class NaiveBayesClassifer {
-	/* 
+import { Database } from "better-sqlite3";
+type TrainingData = { description: string; category: string };
+type WordCount = { word: string; category: string; count: number };
+
+/* 
     Hypothesis - transactionCategory == the category we are testing
 	Evidence - frequency of the tokenised word for that category
 
@@ -11,8 +14,58 @@ class NaiveBayesClassifer {
 
 	The posterior represents our updated belief based on the evidence
 	Posterior P(H|E) == (P(H)*P(E|H)) / (P(H)*P(E|H) + P(¬H)*P(E|¬H))
-	In this context it represents how likely it is that the transaction belongs to the category we are testing
+	In this context it represents how likely it is that the transaction belongs to the category we are testing based on the words in the description
     */
+
+class NaiveBayesClassifer {
+	// Private properties
+	#db: Database;
+	#trainingData: TrainingData[];
+
+	// Constructs a new instance of the classifier
+	constructor(inDb: Database, inTrainingData: TrainingData[]) {
+		this.#db = inDb;
+		this.#trainingData = inTrainingData;
+	}
+
+	// Gets the data from the word_counts table to prevent unecessary queries to the database
+	getWordCountData() {
+		const wordCountSelectStatement = `SELECT * FROM word_counts`;
+		const wordCountData = this.#db
+			.prepare(wordCountSelectStatement)
+			.all() as WordCount[];
+		return wordCountData;
+	}
+
+	// Splits the description into an array of words
+	tokenise(description: string): string[] {
+		const tokenisedDescription = description.split(" ");
+		return tokenisedDescription;
+	}
+
+	train() {
+		// TODO tokenise the training data and insert it into the database
+	}
+
+	calculateWordProbability(word: string, category: string) {
+		// TODO calculate the probability that a word appears in a category
+		// frequency of word in category / total frequency of words in that category
+	}
+
+	scoreCategory(description: string, category: string) {
+		// TODO calculate the sum of the word probabilities in the category
+	}
+
+	classify(description: string) {
+		// Tokenise description
+		// Scores the categories
+		// Returns the category with the highest category
+	}
+
+	updateWordCounts(description: string, category: string) {
+		// Tokenises the description
+		// Updates the word count of the corresponding category with the data
+	}
 }
 
 export default NaiveBayesClassifer;
