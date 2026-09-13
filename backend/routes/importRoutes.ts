@@ -92,7 +92,8 @@ export default function createImportRoutes(db: Database) {
 			filename: file.originalname,
 		});
 		console.log(result);
-		// TODO implement classifier on normalized transactions
+
+		// TODO implement classifier on normalized transactions and insert into the database
 	});
 
 	// GET route to send the import log data to the frontend
