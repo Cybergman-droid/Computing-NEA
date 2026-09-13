@@ -30,3 +30,12 @@ export type NormalizedTransaction = {
 	amount: number;
 	bank: string;
 };
+
+export type SingleTransaction = {
+	amount: number;
+	category: string;
+	description: string;
+	date: string;
+	confidence: 0;
+	autoClassified: boolean;
+};
