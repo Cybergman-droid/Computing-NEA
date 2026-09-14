@@ -49,6 +49,5 @@ const trainingData: TrainingData[] = [
 ];
 
 const testClassifier = new NaiveBayesClassifer(db, trainingData);
-testClassifier.train();
-let wordCount = testClassifier.getWordCountData();
+const wordCount = testClassifier.getWordCountData();
 console.log(wordCount);

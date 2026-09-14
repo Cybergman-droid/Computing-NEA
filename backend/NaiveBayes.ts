@@ -85,6 +85,22 @@ class NaiveBayesClassifer {
 	updateWordCounts(description: string, category: string) {
 		// Tokenises the description
 		// Updates the word count of the corresponding category with the data
+
+		// The upsert statement updates the count if the category and count exist and creates a new row if it doesn't
+		const wordCountsUpsertStatement = `
+                INSERT INTO word_counts
+                (word,category)
+                VALUES (?, ?)
+                ON CONFLICT(word,category) DO
+                UPDATE
+                SET count = count + 1
+            `;
+
+		// Iterates over every transaction in the training data and inserts it into the database
+		const tokenisedDescription = this.tokenise(description);
+		for (let word of tokenisedDescription) {
+			this.#db.prepare(wordCountsUpsertStatement).run(word, category);
+		}
 	}
 }
 
