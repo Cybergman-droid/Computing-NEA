@@ -70,6 +70,9 @@ class NaiveBayesClassifer {
 	calculateWordProbability(word: string, category: string) {
 		// TODO calculate the probability that a word appears in a category
 		// frequency of word in category / total frequency of words in that category
+		// filter by category
+		// calculate the total for loop and sum
+		// calculate word probability and return log of the value
 	}
 
 	scoreCategory(description: string, category: string) {
