@@ -1,7 +1,7 @@
 import {
 	BarclaysTransaction,
 	NormalizedTransaction,
-} from "../types/Transaction";
+} from "../types/TransactionTypes";
 
 function amountParser(credit: number | null, debit: number | null): number {
 	if (credit === null && debit === null) {

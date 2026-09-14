@@ -2,7 +2,7 @@ import { type Request, type Response, Router } from "express";
 import { validationResult } from "express-validator";
 import { singleTransactionValidator } from "../validators/singleTransactionValidationSc";
 import { Database } from "better-sqlite3";
-import { SingleTransaction } from "../types/Transaction";
+import { SingleTransaction } from "../types/TransactionTypes";
 
 // Creates the transaction endpoints that requests will be sent
 // Includes a database connection to interactions with the database

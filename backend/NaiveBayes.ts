@@ -1,5 +1,5 @@
 import { Database } from "better-sqlite3";
-type TrainingData = { description: string; category: string };
+import { TrainingData } from "./types/ClassifierTypes";
 type WordCount = { word: string; category: string; count: number };
 
 /* 
@@ -47,8 +47,8 @@ class NaiveBayesClassifer {
 		// The upsert statement updates the count if the category and count exist and creates a new row if it doesn't
 		const wordCountsUpsertStatement = `
                 INSERT INTO word_counts
-                (word,category)
-                VALUES (?, ?)
+				(word, category, count)
+				VALUES (?, ?, 1)
                 ON CONFLICT(word,category) DO
                 UPDATE
                 SET count = count + 1

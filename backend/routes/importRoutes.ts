@@ -7,7 +7,7 @@ import {
 	BarclaysTransaction,
 	ClassifiedTransaction,
 	NormalizedTransaction,
-} from "../types/Transaction";
+} from "../types/TransactionTypes";
 
 const uploads = multer({ storage: multer.memoryStorage() });
 

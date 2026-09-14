@@ -7,6 +7,7 @@ import createBudgetsRoutes from "./routes/budgetsRoutes";
 import createImportRoutes from "./routes/importRoutes";
 import createStatsRoutes from "./routes/statsRoutes";
 import NaiveBayesClassifer from "./NaiveBayes";
+import { seedTrainingData } from "./trainingData";
 
 type TrainingData = { description: string; category: string };
 
@@ -48,6 +49,7 @@ const trainingData: TrainingData[] = [
 	{ description: "SPOTIFY", category: "Entertainment" },
 ];
 
-const testClassifier = new NaiveBayesClassifer(db, trainingData);
+const testClassifier = new NaiveBayesClassifer(db, seedTrainingData);
+testClassifier.train();
 const wordCount = testClassifier.getWordCountData();
 console.log(wordCount);
