@@ -58,7 +58,7 @@ export default function barclaysParser(
 		}
 
 		let normalizedTransaction: NormalizedTransaction = {
-			description: description,
+			description: description.toUpperCase(),
 			bank: "Barclays",
 			amount: amountParser(credit, debit),
 			date: isoDate.split("T")[0],

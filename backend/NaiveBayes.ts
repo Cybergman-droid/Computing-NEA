@@ -28,7 +28,7 @@ class NaiveBayesClassifer {
 		this.#trainingData = inTrainingData;
 	}
 
-	// Gets the data from the word_counts table to prevent unecessary queries to the database
+	// Gets all the data from the word_counts table to prevent unecessary queries to the database
 	getWordCountData() {
 		const wordCountSelectStatement = `SELECT * FROM word_counts`;
 		const wordCountData = this.#db
@@ -44,7 +44,27 @@ class NaiveBayesClassifer {
 	}
 
 	train() {
-		// TODO tokenise the training data and insert it into the database
+		// The upsert statement updates the count if the category and count exist and creates a new row if it doesn't
+		const wordCountsUpsertStatement = `
+                INSERT INTO word_counts
+                (word,category)
+                VALUES (?, ?)
+                ON CONFLICT(word,category) DO
+                UPDATE
+                SET count = count + 1
+            `;
+
+		// Iterates over every transaction in the training data and inserts it into the database
+		for (let trainingTransaction of this.#trainingData) {
+			const tokenisedDescription = this.tokenise(
+				trainingTransaction.description,
+			);
+			for (let word of tokenisedDescription) {
+				this.#db
+					.prepare(wordCountsUpsertStatement)
+					.run(word, trainingTransaction.category);
+			}
+		}
 	}
 
 	calculateWordProbability(word: string, category: string) {

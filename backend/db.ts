@@ -29,7 +29,7 @@ const wordCountsTableInitStatement = `
     CREATE TABLE IF NOT EXISTS word_counts (
         word TEXT NOT NULL,
         category TEXT NOT NULL,
-        count INT NOT NULL,
+        count INT NOT NULL DEFAULT 1,
         UNIQUE(word, category)
     );
 `;

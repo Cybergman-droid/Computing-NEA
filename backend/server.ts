@@ -6,6 +6,9 @@ import createTransactionRoutes from "./routes/transactionRoutes";
 import createBudgetsRoutes from "./routes/budgetsRoutes";
 import createImportRoutes from "./routes/importRoutes";
 import createStatsRoutes from "./routes/statsRoutes";
+import NaiveBayesClassifer from "./NaiveBayes";
+
+type TrainingData = { description: string; category: string };
 
 // Initlialises the express app
 const app: Express = express();
@@ -37,3 +40,15 @@ app.use("/api/stats", createStatsRoutes(db));
 app.listen(PORT, () => {
 	console.log(`Server running on Port ${PORT}`);
 });
+
+const trainingData: TrainingData[] = [
+	{ description: "TESCO SUPERMARKET", category: "Groceries" },
+	{ description: "NETFLIX.COM", category: "Entertainment" },
+	{ description: "SHELL SERVICE STATION", category: "Transport" },
+	{ description: "SPOTIFY", category: "Entertainment" },
+];
+
+const testClassifier = new NaiveBayesClassifer(db, trainingData);
+testClassifier.train();
+let wordCount = testClassifier.getWordCountData();
+console.log(wordCount);
