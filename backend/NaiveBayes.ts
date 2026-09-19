@@ -73,6 +73,7 @@ class NaiveBayesClassifer {
 		// filter by category
 		// calculate the total for loop and sum
 		// calculate word probability and return log of the value
+		// use group by to select the totals for each category
 	}
 
 	scoreCategory(description: string, category: string) {

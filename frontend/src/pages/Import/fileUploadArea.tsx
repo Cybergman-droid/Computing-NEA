@@ -19,6 +19,7 @@ function FileUploadArea({ onFileUpload }: FileUploadAreaProps) {
 				"application/vnd.ms-excel": [".csv"],
 				"application/octet-stream": [".csv"],
 			}, // Defines the only files that can be accepted
+
 			// Function that runs when a file is dropped into the zone
 			async onDrop(acceptedFiles, fileRejections) {
 				console.log(acceptedFiles[0]);

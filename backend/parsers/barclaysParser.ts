@@ -33,6 +33,7 @@ export default function barclaysParser(
 		let isoDate;
 
 		// Validates the date and converts into a date object
+		// TODO replace with an if else statement
 		try {
 			const [day, month, year] = date.split("/").map(Number);
 			isoDate = new Date(Date.UTC(year, month - 1, day)).toISOString();
