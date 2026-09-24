@@ -8,9 +8,11 @@ type ImportSummary = {
 	skipped: number;
 	date: string;
 };
+
 type ImportSummaryCardProps = {
 	reImportSummary: boolean;
 };
+
 function ImportSummaryCard({ reImportSummary }: ImportSummaryCardProps) {
 	const [data, setData] = useState<ImportSummary | null>(null);
 
