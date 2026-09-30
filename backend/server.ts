@@ -8,8 +8,7 @@ import createImportRoutes from "./routes/importRoutes";
 import createStatsRoutes from "./routes/statsRoutes";
 import NaiveBayesClassifer from "./NaiveBayes";
 import { seedTrainingData } from "./trainingData";
-
-type TrainingData = { description: string; category: string };
+import { TrainingData } from "./types/ClassifierTypes";
 
 // Initlialises the express app
 const app: Express = express();
@@ -41,13 +40,6 @@ app.use("/api/stats", createStatsRoutes(db));
 app.listen(PORT, () => {
 	console.log(`Server running on Port ${PORT}`);
 });
-
-const trainingData: TrainingData[] = [
-	{ description: "TESCO SUPERMARKET", category: "Groceries" },
-	{ description: "NETFLIX.COM", category: "Entertainment" },
-	{ description: "SHELL SERVICE STATION", category: "Transport" },
-	{ description: "SPOTIFY", category: "Entertainment" },
-];
 
 const testClassifier = new NaiveBayesClassifer(db, seedTrainingData);
 testClassifier.train();
