@@ -30,6 +30,11 @@ class NaiveBayesClassifer {
 
 	// Gets all the data from the word_counts table to prevent unecessary queries to the database
 	getWordCountData() {
+		// SELECT category, sum(count)
+		// FROM word_counts
+		// WHERE word = 'TargetWord'
+		// GROUP BY category
+		// group by to return the category and the number of words
 		const wordCountSelectStatement = `SELECT * FROM word_counts`;
 		const wordCountData = this.#db
 			.prepare(wordCountSelectStatement)
@@ -57,7 +62,7 @@ class NaiveBayesClassifer {
 		// Iterates over every transaction in the training data and inserts it into the database
 		for (let trainingTransaction of this.#trainingData) {
 			const tokenisedDescription = this.tokenise(
-				trainingTransaction.description,
+				trainingTransaction.description
 			);
 			for (let word of tokenisedDescription) {
 				this.#db
