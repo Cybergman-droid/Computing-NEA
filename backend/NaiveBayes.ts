@@ -28,11 +28,6 @@ class NaiveBayesClassifer {
 		this.#trainingData = inTrainingData;
 	}
 
-	// SELECT category, sum(count)
-	// FROM word_counts
-	// WHERE word = 'TargetWord'
-	// GROUP BY category
-
 	// Gets all the category and count data from the word_counts table to prevent unecessary queries to the database
 	getWordCountData() {
 		// Uses GROUP BY to return the category and the number of words in that category
@@ -78,6 +73,10 @@ class NaiveBayesClassifer {
 	}
 
 	calculateWordProbability(word: string, category: string) {
+		// SELECT category, sum(count)
+		// FROM word_counts
+		// WHERE word = 'TargetWord'
+		// GROUP BY category
 		// TODO calculate the probability that a word appears in a category
 		// frequency of word in category / total frequency of words in that category
 		// filter by category
