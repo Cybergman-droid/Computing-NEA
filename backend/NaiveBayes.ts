@@ -36,9 +36,22 @@ class NaiveBayesClassifer {
 		FROM word_counts
 		GROUP BY category
 		`;
+		const wordCountCategoriesSelectStatement = `
+		SELECT category 	
+		FROM word_counts
+		GROUP BY category
+		`;
 		const wordCountData = this.#db
 			.prepare(wordCountSelectStatement)
 			.all() as WordCount[];
+
+		const categories = this.#db
+			.prepare(wordCountCategoriesSelectStatement)
+			.all();
+		console.log(categories);
+
+		const dynamicData = { [categories[0].category]: "test value" };
+		console.log(dynamicData);
 		return wordCountData;
 	}
 
@@ -62,7 +75,7 @@ class NaiveBayesClassifer {
 		// Iterates over every transaction in the training data and inserts it into the database
 		for (let trainingTransaction of this.#trainingData) {
 			const tokenisedDescription = this.tokenise(
-				trainingTransaction.description,
+				trainingTransaction.description
 			);
 			for (let word of tokenisedDescription) {
 				this.#db
