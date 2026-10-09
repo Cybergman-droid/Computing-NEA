@@ -85,6 +85,7 @@ class NaiveBayesClassifer {
 		}
 	}
 
+	// Calculate the probability that a word belongs to a specific category
 	calculateWordProbability(word: string, category: string) {
 		// SELECT category, sum(count)
 		// FROM word_counts
@@ -95,7 +96,6 @@ class NaiveBayesClassifer {
 		// filter by category
 		// calculate the total for loop and sum
 		// calculate word probability and return log of the value
-		// use group by to select the totals for each category
 	}
 
 	scoreCategory(description: string, category: string) {
