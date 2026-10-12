@@ -75,7 +75,7 @@ class NaiveBayesClassifer {
 		// Iterates over every transaction in the training data and inserts it into the database
 		for (let trainingTransaction of this.#trainingData) {
 			const tokenisedDescription = this.tokenise(
-				trainingTransaction.description
+				trainingTransaction.description,
 			);
 			for (let word of tokenisedDescription) {
 				this.#db
