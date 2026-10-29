@@ -1,5 +1,9 @@
 import { Database } from "better-sqlite3";
-import { TrainingData } from "./types/ClassifierTypes";
+import type {
+	TrainingData,
+	CategoryData,
+	WordFrequency,
+} from "./types/ClassifierTypes";
 type WordCount = { category: string; categoryTotal: number };
 
 /* 
@@ -21,15 +25,19 @@ class NaiveBayesClassifer {
 	// Private properties
 	#db: Database;
 	#trainingData: TrainingData[];
+	#categories: string[];
+	#categoryTotals: CategoryData;
 
 	// Constructs a new instance of the classifier
 	constructor(inDb: Database, inTrainingData: TrainingData[]) {
 		this.#db = inDb;
 		this.#trainingData = inTrainingData;
+		this.#categories = [];
+		this.#categoryTotals = {};
 	}
 
 	// Gets all the category and count data from the word_counts table to prevent unecessary queries to the database
-	getWordCountData() {
+	getWordCountData(): CategoryData {
 		// Uses GROUP BY to return the category and the number of words in that category
 		const wordCountSelectStatement = `
 		SELECT category, sum(count) AS categoryTotal
@@ -45,14 +53,36 @@ class NaiveBayesClassifer {
 			.prepare(wordCountSelectStatement)
 			.all() as WordCount[];
 
-		const categories = this.#db
+		const categoriesData = this.#db
 			.prepare(wordCountCategoriesSelectStatement)
-			.all();
+			.all() as Record<string, string>[];
+		console.log(categoriesData);
+
+		// Creates an object from the category totals, matching the category to its total
+		let categoryTotals: CategoryData = {};
+		for (let data of wordCountData) {
+			// console.log(data);
+			categoryTotals[data.category] = data.categoryTotal;
+		}
+		console.log(categoryTotals);
+
+		let categories: string[] = [];
+		for (let data of categoriesData) {
+			// console.log(data);
+			categories.push(data.category);
+		}
 		console.log(categories);
 
-		const dynamicData = { [categories[0].category]: "test value" };
-		console.log(dynamicData);
-		return wordCountData;
+		// Shows that the totals can be accsecd using the categories retrieved from the database as a key
+		for (let category of categories) {
+			console.log(category);
+			console.log(categoryTotals[category]);
+		}
+
+		// Updates the objects attributes with the data retrieved from the database
+		this.#categoryTotals = categoryTotals;
+		this.#categories = categories;
+		return categoryTotals;
 	}
 
 	// Splits the description into an array of words
@@ -72,7 +102,7 @@ class NaiveBayesClassifer {
                 SET count = count + 1
             `;
 
-		// Iterates over every transaction in the training data and inserts it into the database
+		// Iterates over every transaction in the training data and upserts it into the database
 		for (let trainingTransaction of this.#trainingData) {
 			const tokenisedDescription = this.tokenise(
 				trainingTransaction.description,
@@ -87,10 +117,25 @@ class NaiveBayesClassifer {
 
 	// Calculate the probability that a word belongs to a specific category
 	calculateWordProbability(word: string, category: string) {
-		// SELECT category, sum(count)
-		// FROM word_counts
-		// WHERE word = 'TargetWord'
-		// GROUP BY category
+		// Selects the frequency of a word passed in for every category
+		const wordFrequencyCountSelectStatement = `
+			SELECT category, sum(count) AS frequency
+			FROM word_counts
+			WHERE word = ?
+			GROUP BY category
+		`;
+		const frequencyCountData = this.#db
+			.prepare(wordFrequencyCountSelectStatement)
+			.all(word) as Record<string, number>[];
+		console.log(frequencyCountData);
+
+		// Creates an object from the frequencyCountData, matching the category to the frequency of the word in that category
+		let wordFrequency: WordFrequency = {};
+		for (let data of frequencyCountData) {
+			wordFrequency[data.category] = data.frequency;
+		}
+		console.log(wordFrequency);
+
 		// TODO calculate the probability that a word appears in a category
 		// frequency of word in category / total frequency of words in that category
 		// filter by category

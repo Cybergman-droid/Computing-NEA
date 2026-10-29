@@ -44,4 +44,4 @@ app.listen(PORT, () => {
 const testClassifier = new NaiveBayesClassifer(db, seedTrainingData);
 testClassifier.train();
 const wordCount = testClassifier.getWordCountData();
-console.log(wordCount);
+testClassifier.calculateWordProbability("TESCO", "Savings");
