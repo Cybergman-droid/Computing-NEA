@@ -56,7 +56,7 @@ class NaiveBayesClassifer {
 		const categoriesData = this.#db
 			.prepare(wordCountCategoriesSelectStatement)
 			.all() as Record<string, string>[];
-		console.log(categoriesData);
+		// console.log(categoriesData);
 
 		// Creates an object from the category totals, matching the category to its total
 		let categoryTotals: CategoryData = {};
@@ -127,7 +127,6 @@ class NaiveBayesClassifer {
 		const frequencyCountData = this.#db
 			.prepare(wordFrequencyCountSelectStatement)
 			.all(word) as Record<string, number>[];
-		console.log(frequencyCountData);
 
 		// Creates an object from the frequencyCountData, matching the category to the frequency of the word in that category
 		let wordFrequency: WordFrequency = {};
@@ -138,16 +137,43 @@ class NaiveBayesClassifer {
 
 		// TODO calculate the probability that a word appears in a category
 		// frequency of word in category / total frequency of words in that category
-		// filter by category
-		// calculate the total for loop and sum
-		// calculate word probability and return log of the value
+
+		// Calculate the probability that a word appears in a category and returns the log of that value returns 0 if the word dosen't appear in thr category
+		if (!wordFrequency[category]) {
+			return 0;
+		}
+
+		const wordProbability =
+			wordFrequency[category] / this.#categoryTotals[category];
+		const logWordProbability = Math.log(wordProbability);
+
+		return logWordProbability;
 	}
 
-	scoreCategory(description: string, category: string) {
-		// TODO calculate the sum of the word probabilities in the category
+	// Calculates the probability of a transaction belonging to a category and returns an object of category and sum probability {category: sumProbability}
+	scoreCategory(tokenisedDescription: string[], category: string) {
+		// Array to store the logProbabilities
+		let logWordProbabilities: number[] = [];
+
+		// Iterates over every word and calculates the probability that it belongs to a category and appends it to an array
+		for (let word of tokenisedDescription) {
+			const logWordProbability = this.calculateWordProbability(word, category);
+			logWordProbabilities.push(logWordProbability);
+		}
+
+		// Sums up the logProbabilities
+		const totalProbability = logWordProbabilities.reduce((total, value) => {
+			return total + value;
+		});
+
+		return { [category]: totalProbability };
 	}
 
 	classify(description: string) {
+		// let tokenisedDescription: string[] = [];
+		// for (let category of this.#categories) {
+		// 	this.scoreCategory(tokenisedDescription, category);
+		// }
 		// Tokenise description
 		// Scores the categories
 		// Returns the category with the highest category

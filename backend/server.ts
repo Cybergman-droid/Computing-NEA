@@ -44,4 +44,10 @@ app.listen(PORT, () => {
 const testClassifier = new NaiveBayesClassifer(db, seedTrainingData);
 testClassifier.train();
 const wordCount = testClassifier.getWordCountData();
-testClassifier.calculateWordProbability("TESCO", "Savings");
+testClassifier.calculateWordProbability("TESCO", "Utilities");
+let testTransaction = {
+	description: "NETFLIX MONTHLY SUBSCRIPTION",
+	category: "Entertainment",
+};
+let description = testClassifier.tokenise(testTransaction.description);
+testClassifier.scoreCategory(description, testTransaction.category);
