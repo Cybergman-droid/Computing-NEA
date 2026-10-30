@@ -3,6 +3,7 @@ import type {
 	TrainingData,
 	CategoryData,
 	WordFrequency,
+	CategoryScore
 } from "./types/ClassifierTypes";
 type WordCount = { category: string; categoryTotal: number };
 
@@ -135,9 +136,6 @@ class NaiveBayesClassifer {
 		}
 		console.log(wordFrequency);
 
-		// TODO calculate the probability that a word appears in a category
-		// frequency of word in category / total frequency of words in that category
-
 		// Calculate the probability that a word appears in a category and returns the log of that value returns 0 if the word dosen't appear in thr category
 		if (!wordFrequency[category]) {
 			return 0;
@@ -151,7 +149,7 @@ class NaiveBayesClassifer {
 	}
 
 	// Calculates the probability of a transaction belonging to a category and returns an object of category and sum probability {category: sumProbability}
-	scoreCategory(tokenisedDescription: string[], category: string) {
+	scoreCategory(tokenisedDescription: string[], category: string):CategoryScore {
 		// Array to store the logProbabilities
 		let logWordProbabilities: number[] = [];
 
@@ -166,7 +164,7 @@ class NaiveBayesClassifer {
 			return total + value;
 		});
 
-		return { [category]: totalProbability };
+		return {category: category, totalProbability: totalProbability};
 	}
 
 	classify(description: string) {
@@ -174,9 +172,11 @@ class NaiveBayesClassifer {
 
 		let categoryScores = [];
 		for (let category of this.#categories) {
-			const categoryScore = this.scoreCategory(tokenisedDescription, category);
+			const categoryScore: CategoryScore = this.scoreCategory(tokenisedDescription, category);
 			categoryScores.push(categoryScore);
 		}
+
+		categoryScores.sort((a, b) => a.totalProbability - b.totalProbability)
 
 		// Scores the categories
 		// Returns the category with the highest category
