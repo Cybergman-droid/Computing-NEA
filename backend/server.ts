@@ -49,5 +49,4 @@ let testTransaction = {
 	description: "NETFLIX MONTHLY SUBSCRIPTION",
 	category: "Entertainment",
 };
-let description = testClassifier.tokenise(testTransaction.description);
-testClassifier.scoreCategory(description, testTransaction.category);
+testClassifier.classify(testTransaction.description);

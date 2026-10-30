@@ -145,7 +145,7 @@ class NaiveBayesClassifer {
 
 		const wordProbability =
 			wordFrequency[category] / this.#categoryTotals[category];
-		const logWordProbability = Math.log(wordProbability);
+		const logWordProbability = -Math.log(wordProbability);
 
 		return logWordProbability;
 	}
@@ -170,11 +170,14 @@ class NaiveBayesClassifer {
 	}
 
 	classify(description: string) {
-		// let tokenisedDescription: string[] = [];
-		// for (let category of this.#categories) {
-		// 	this.scoreCategory(tokenisedDescription, category);
-		// }
-		// Tokenise description
+		const tokenisedDescription = this.tokenise(description);
+
+		let categoryScores = [];
+		for (let category of this.#categories) {
+			const categoryScore = this.scoreCategory(tokenisedDescription, category);
+			categoryScores.push(categoryScore);
+		}
+
 		// Scores the categories
 		// Returns the category with the highest category
 	}
