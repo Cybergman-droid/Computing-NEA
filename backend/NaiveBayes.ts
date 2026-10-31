@@ -3,7 +3,7 @@ import type {
 	TrainingData,
 	CategoryData,
 	WordFrequency,
-	CategoryScore
+	CategoryScore,
 } from "./types/ClassifierTypes";
 type WordCount = { category: string; categoryTotal: number };
 
@@ -28,6 +28,7 @@ class NaiveBayesClassifer {
 	#trainingData: TrainingData[];
 	#categories: string[];
 	#categoryTotals: CategoryData;
+	#vocabularySize: number;
 
 	// Constructs a new instance of the classifier
 	constructor(inDb: Database, inTrainingData: TrainingData[]) {
@@ -35,6 +36,7 @@ class NaiveBayesClassifer {
 		this.#trainingData = inTrainingData;
 		this.#categories = [];
 		this.#categoryTotals = {};
+		this.#vocabularySize = 0;
 	}
 
 	// Gets all the category and count data from the word_counts table to prevent unecessary queries to the database
@@ -50,6 +52,10 @@ class NaiveBayesClassifer {
 		FROM word_counts
 		GROUP BY category
 		`;
+		const vocabSizeSelectStatement = `
+		SELECT COUNT(DISTINCT word) AS size FROM word_counts
+		`;
+
 		const wordCountData = this.#db
 			.prepare(wordCountSelectStatement)
 			.all() as WordCount[];
@@ -57,12 +63,14 @@ class NaiveBayesClassifer {
 		const categoriesData = this.#db
 			.prepare(wordCountCategoriesSelectStatement)
 			.all() as Record<string, string>[];
-		// console.log(categoriesData);
+
+		const vocabulary = this.#db.prepare(vocabSizeSelectStatement).all() as {
+			size: number;
+		}[];
 
 		// Creates an object from the category totals, matching the category to its total
 		let categoryTotals: CategoryData = {};
 		for (let data of wordCountData) {
-			// console.log(data);
 			categoryTotals[data.category] = data.categoryTotal;
 		}
 		console.log(categoryTotals);
@@ -74,13 +82,8 @@ class NaiveBayesClassifer {
 		}
 		console.log(categories);
 
-		// Shows that the totals can be accsecd using the categories retrieved from the database as a key
-		for (let category of categories) {
-			console.log(category);
-			console.log(categoryTotals[category]);
-		}
-
 		// Updates the objects attributes with the data retrieved from the database
+		this.#vocabularySize = vocabulary[0].size;
 		this.#categoryTotals = categoryTotals;
 		this.#categories = categories;
 		return categoryTotals;
@@ -118,40 +121,42 @@ class NaiveBayesClassifer {
 
 	// Calculate the probability that a word belongs to a specific category
 	calculateWordProbability(word: string, category: string) {
-		// Selects the frequency of a word passed in for every category
+		const categoryTotal = this.#categoryTotals[category];
+
+		// Selects the frequency of a word passed in, in the category passed in
 		const wordFrequencyCountSelectStatement = `
-			SELECT category, sum(count) AS frequency
-			FROM word_counts
-			WHERE word = ?
-			GROUP BY category
+		SELECT count FROM word_counts WHERE word = ? AND category = ?
 		`;
 		const frequencyCountData = this.#db
 			.prepare(wordFrequencyCountSelectStatement)
-			.all(word) as Record<string, number>[];
+			.all(word, category) as { count: number }[];
+		console.log(frequencyCountData);
 
-		// Creates an object from the frequencyCountData, matching the category to the frequency of the word in that category
-		let wordFrequency: WordFrequency = {};
-		for (let data of frequencyCountData) {
-			wordFrequency[data.category] = data.frequency;
-		}
-		console.log(wordFrequency);
+		const wordFrequency = frequencyCountData[0]?.count ?? 0;
 
-		// Calculate the probability that a word appears in a category and returns the log of that value returns 0 if the word dosen't appear in thr category
-		if (!wordFrequency[category]) {
-			return 0;
-		}
-
+		// Calculate the probability that a word appears in a category and applies laplace smoothing to guard aganist unseen words
 		const wordProbability =
-			wordFrequency[category] / this.#categoryTotals[category];
-		const logWordProbability = -Math.log(wordProbability);
+			(wordFrequency + 1) / (categoryTotal + this.#vocabularySize);
+		const logWordProbability = Math.log(wordProbability);
 
 		return logWordProbability;
 	}
 
 	// Calculates the probability of a transaction belonging to a category and returns an object of category and sum probability {category: sumProbability}
-	scoreCategory(tokenisedDescription: string[], category: string):CategoryScore {
+	scoreCategory(
+		tokenisedDescription: string[],
+		category: string,
+	): CategoryScore {
+		// Calculates the prior which is how likely a category is to appear before considering the description
+		const categoryTransactionCount = this.#trainingData.filter(
+			(transaction) => transaction.category === category,
+		).length;
+		const logCategoryPrior = Math.log(
+			categoryTransactionCount / this.#trainingData.length,
+		);
+
 		// Array to store the logProbabilities
-		let logWordProbabilities: number[] = [];
+		let logWordProbabilities: number[] = [logCategoryPrior];
 
 		// Iterates over every word and calculates the probability that it belongs to a category and appends it to an array
 		for (let word of tokenisedDescription) {
@@ -164,22 +169,27 @@ class NaiveBayesClassifer {
 			return total + value;
 		});
 
-		return {category: category, totalProbability: totalProbability};
+		return { category: category, totalProbability: totalProbability };
 	}
 
-	classify(description: string) {
+	classify(description: string): CategoryScore {
 		const tokenisedDescription = this.tokenise(description);
 
-		let categoryScores = [];
+		// Calculates the probability of a transaction belonging to a category for every category and appends to an array
+		let categoryScores: CategoryScore[] = [];
 		for (let category of this.#categories) {
-			const categoryScore: CategoryScore = this.scoreCategory(tokenisedDescription, category);
+			const categoryScore: CategoryScore = this.scoreCategory(
+				tokenisedDescription,
+				category,
+			);
 			categoryScores.push(categoryScore);
 		}
 
-		categoryScores.sort((a, b) => a.totalProbability - b.totalProbability)
+		// Sorts the categories in descending order based in the score
+		categoryScores.sort((a, b) => b.totalProbability - a.totalProbability);
 
-		// Scores the categories
-		// Returns the category with the highest category
+		// Returns the category with the highest score
+		return categoryScores[0];
 	}
 
 	updateWordCounts(description: string, category: string) {
