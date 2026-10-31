@@ -26,7 +26,10 @@ function TransactionFeedback({ response }: { response: Response | unknown }) {
 		switch (response.status) {
 			case 201:
 				return (
-					<div role='alert' className='alert alert-success alert-soft'>
+					<div
+						role='alert'
+						className='alert alert-success alert-soft flex items-center justify-center'
+					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							className='h-6 w-6 shrink-0 stroke-current'
@@ -46,7 +49,10 @@ function TransactionFeedback({ response }: { response: Response | unknown }) {
 
 			case 400:
 				return (
-					<div role='alert' className='alert alert-error alert-soft'>
+					<div
+						role='alert'
+						className='alert alert-error alert-soft flex items-center justify-center'
+					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							className='h-6 w-6 shrink-0 stroke-current'
@@ -66,7 +72,10 @@ function TransactionFeedback({ response }: { response: Response | unknown }) {
 
 			default:
 				return (
-					<div role='alert' className='alert alert-warning alert-soft'>
+					<div
+						role='alert'
+						className='alert alert-warning alert-soft flex items-center justify-center'
+					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							className='h-6 w-6 shrink-0 stroke-current'
@@ -88,7 +97,10 @@ function TransactionFeedback({ response }: { response: Response | unknown }) {
 
 	// If it's an error thrown by your validator
 	return (
-		<div role='alert' className='alert alert-error alert-soft'>
+		<div
+			role='alert'
+			className='alert alert-error alert-soft flex items-center justify-center'
+		>
 			<span>{String(response)}</span>
 		</div>
 	);

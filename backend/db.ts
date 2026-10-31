@@ -8,13 +8,19 @@ const transactionTableInitStatement = `
         description TEXT NOT NULL,
         date TEXT NOT NULL,
         confidence REAL NOT NULL,
-        autoClassified BOOL NOT NULL
+        auto_classified BOOL NOT NULL,
+        bank TEXT
     );
 `;
 
+// const normalizedTransactionsDateIndexInitStatement = `
+//     CREATE INDEX IF NOT EXISTS idx_normalized_transactions_date
+//     ON normalized_transactions_buffer (date);
+// `;
+
 const budgetsTableInitStatement = `
     CREATE TABLE IF NOT EXISTS budgets (
-        category TEXT NOT NULL,
+        category TEXT NOT NULL PRIMARY KEY,
         monthly_limit REAL NOT NULL
     );
 `;
@@ -23,7 +29,7 @@ const wordCountsTableInitStatement = `
     CREATE TABLE IF NOT EXISTS word_counts (
         word TEXT NOT NULL,
         category TEXT NOT NULL,
-        count INT NOT NULL,
+        count INT NOT NULL DEFAULT 1,
         UNIQUE(word, category)
     );
 `;
@@ -34,7 +40,8 @@ const importLogTableInitStatement = `
         date TEXT NOT NULL,
         filename TEXT NOT NULL,
         imported REAL NOT NULL,
-        skipped REAL NOT NULL
+        skipped REAL NOT NULL,
+        bank TEXT
     );
 `;
 

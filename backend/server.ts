@@ -6,6 +6,8 @@ import createTransactionRoutes from "./routes/transactionRoutes";
 import createBudgetsRoutes from "./routes/budgetsRoutes";
 import createImportRoutes from "./routes/importRoutes";
 import createStatsRoutes from "./routes/statsRoutes";
+import NaiveBayesClassifer from "./NaiveBayes";
+import { seedTrainingData } from "./trainingData";
 
 // Initlialises the express app
 const app: Express = express();
@@ -17,7 +19,7 @@ const db = initDb();
 // Allows the frontend to make http requests to the backend
 app.use(
 	cors({
-		origin: "http://localhost:5173",
+		origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
 		methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
 		credentials: true,
 	}),
@@ -37,3 +39,14 @@ app.use("/api/stats", createStatsRoutes(db));
 app.listen(PORT, () => {
 	console.log(`Server running on Port ${PORT}`);
 });
+
+// const testClassifier = new NaiveBayesClassifer(db, seedTrainingData);
+// testClassifier.train();
+// let testTransaction = {
+// 	description: "TESCO SUPERSTORE",
+// 	category: "Entertainment",
+// };
+// testClassifier.getWordCountData();
+// // testClassifier.calculateWordProbability("NETFLIX", "Entertainment");
+// let category = testClassifier.classify(testTransaction.description);
+// console.log(category);
