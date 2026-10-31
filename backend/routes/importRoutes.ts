@@ -8,6 +8,8 @@ import {
 	ClassifiedTransaction,
 	NormalizedTransaction,
 } from "../types/TransactionTypes";
+import NaiveBayesClassifer from "../NaiveBayes";
+import { seedTrainingData } from "../trainingData";
 
 const uploads = multer({ storage: multer.memoryStorage() });
 
@@ -24,6 +26,9 @@ function classifyTransactions(
 
 export default function createImportRoutes(db: Database) {
 	const importRouter = Router();
+	const classifier = new NaiveBayesClassifer(db, seedTrainingData);
+	classifier.train();
+	classifier.getWordCountData();
 
 	// POST route to recieve the CSV file sent to the database using the multer middleware
 	importRouter.post("/", uploads.single("bankCsvFile"), (request, response) => {
@@ -68,6 +73,36 @@ export default function createImportRoutes(db: Database) {
 			});
 		}
 
+		// Iterates over every transaction, classifies it and inserts it into the database
+		for (let normalizedTransaction of normalizedTransactions) {
+			const categoryScore = classifier.classify(
+				normalizedTransaction.description,
+			);
+			const classifiedTransaction: ClassifiedTransaction = {
+				...normalizedTransaction,
+				category: categoryScore.category,
+				confidence: categoryScore.confidence,
+				autoClassified: true,
+			};
+			// If there are no errors the transaction is inserted into the database
+			const transactionInsertStatement = `
+                INSERT INTO transactions
+                (amount, category, description, date, confidence, auto_classified,bank)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            `;
+			const result = db
+				.prepare(transactionInsertStatement)
+				.run(
+					classifiedTransaction.amount,
+					classifiedTransaction.category,
+					classifiedTransaction.description,
+					classifiedTransaction.date,
+					classifiedTransaction.confidence,
+					classifiedTransaction.autoClassified ? 1 : 0,
+					"Barclays",
+				);
+		}
+
 		console.log("Parsed Transactions:", normalizedTransactions);
 		console.log("number of rows skipped", numRowsSkipped);
 		console.log("number of rows imported", numRowsImported);
@@ -92,8 +127,6 @@ export default function createImportRoutes(db: Database) {
 			filename: file.originalname,
 		});
 		console.log(result);
-
-		// TODO implement classifier on normalized transactions and insert into the database
 	});
 
 	// GET route to send the import log data to the frontend

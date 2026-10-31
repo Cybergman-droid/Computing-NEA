@@ -117,6 +117,7 @@ class NaiveBayesClassifer {
 					.run(word, trainingTransaction.category);
 			}
 		}
+		console.log("The model has been trained");
 	}
 
 	// Calculate the probability that a word belongs to a specific category
@@ -146,7 +147,7 @@ class NaiveBayesClassifer {
 	scoreCategory(
 		tokenisedDescription: string[],
 		category: string,
-	): CategoryScore {
+	): Omit<CategoryScore, "confidence"> {
 		// Calculates the prior which is how likely a category is to appear before considering the description
 		const categoryTransactionCount = this.#trainingData.filter(
 			(transaction) => transaction.category === category,
@@ -169,27 +170,54 @@ class NaiveBayesClassifer {
 			return total + value;
 		});
 
-		return { category: category, totalProbability: totalProbability };
+		return { category, totalProbability };
 	}
 
 	classify(description: string): CategoryScore {
 		const tokenisedDescription = this.tokenise(description);
 
 		// Calculates the probability of a transaction belonging to a category for every category and appends to an array
-		let categoryScores: CategoryScore[] = [];
+		let categoryScores: Omit<CategoryScore, "confidence">[] = [];
 		for (let category of this.#categories) {
-			const categoryScore: CategoryScore = this.scoreCategory(
-				tokenisedDescription,
-				category,
-			);
+			const categoryScore = this.scoreCategory(tokenisedDescription, category);
 			categoryScores.push(categoryScore);
 		}
 
-		// Sorts the categories in descending order based in the score
-		categoryScores.sort((a, b) => b.totalProbability - a.totalProbability);
+		if (categoryScores.length === 0) {
+			throw new Error("Cannot classify without trained category data");
+		}
 
-		// Returns the category with the highest score
-		return categoryScores[0];
+		// Obtains the maximum of all the scores
+		const maxScore = Math.max(
+			...categoryScores.map((score) => score.totalProbability),
+		);
+		// Checks if it is a finite value
+		if (!Number.isFinite(maxScore)) {
+			throw new Error(
+				"Cannot calculate confidence from invalid category scores",
+			);
+		}
+
+		// Creates weights for every category
+		const categoryWeights = categoryScores.map((score) =>
+			Math.exp(score.totalProbability - maxScore),
+		);
+		const totalWeight = categoryWeights.reduce(
+			(total, weight) => total + weight,
+			0,
+		);
+
+		// Creates a confidence score for every category based on the weights
+		const scoredCategories: CategoryScore[] = categoryScores.map(
+			(score, index) => ({
+				...score,
+				confidence: (categoryWeights[index] / totalWeight) * 100,
+			}),
+		);
+
+		// Sorts the categories and returns the highest scoring one
+		scoredCategories.sort((a, b) => b.totalProbability - a.totalProbability);
+		return scoredCategories[0];
 	}
 
 	updateWordCounts(description: string, category: string) {

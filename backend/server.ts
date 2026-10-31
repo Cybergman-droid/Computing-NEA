@@ -8,7 +8,6 @@ import createImportRoutes from "./routes/importRoutes";
 import createStatsRoutes from "./routes/statsRoutes";
 import NaiveBayesClassifer from "./NaiveBayes";
 import { seedTrainingData } from "./trainingData";
-import { TrainingData } from "./types/ClassifierTypes";
 
 // Initlialises the express app
 const app: Express = express();
@@ -41,13 +40,13 @@ app.listen(PORT, () => {
 	console.log(`Server running on Port ${PORT}`);
 });
 
-const testClassifier = new NaiveBayesClassifer(db, seedTrainingData);
-testClassifier.train();
-let testTransaction = {
-	description: "NETFLIX MONTHLY SUBSCRIPTION",
-	category: "Entertainment",
-};
-testClassifier.getWordCountData();
-// testClassifier.calculateWordProbability("NETFLIX", "Entertainment");
-let category = testClassifier.classify(testTransaction.description);
-console.log(category);
+// const testClassifier = new NaiveBayesClassifer(db, seedTrainingData);
+// testClassifier.train();
+// let testTransaction = {
+// 	description: "TESCO SUPERSTORE",
+// 	category: "Entertainment",
+// };
+// testClassifier.getWordCountData();
+// // testClassifier.calculateWordProbability("NETFLIX", "Entertainment");
+// let category = testClassifier.classify(testTransaction.description);
+// console.log(category);
