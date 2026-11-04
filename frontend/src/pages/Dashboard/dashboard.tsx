@@ -10,12 +10,14 @@ function DashboardPlaceholder() {
 				<div className='bg-base-300'>
 					<DashboardStatCard title='Balance' data={balance}></DashboardStatCard>
 				</div>
+
 				<div className='bg-base-300'>
 					<DashboardStatCard
 						title='Income This Month'
 						data={income}
 					></DashboardStatCard>
 				</div>
+
 				<div className='bg-base-300'>
 					<DashboardStatCard
 						title='Spent This Month'
