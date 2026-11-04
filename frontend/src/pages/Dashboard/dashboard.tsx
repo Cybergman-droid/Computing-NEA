@@ -1,16 +1,29 @@
+import DashboardStatCard from "./dashboardStatCard";
+
 function DashboardPlaceholder() {
+	const income = 19000.0;
+	const balance = 456.79;
+	const spent = 1352.0;
 	return (
-		<div className='bg-base-300'>
-			<div className='min-h-screen bg-base-300 flex items-center justify-center'>
-				<div className='card bg-base-200 shadow-xl p-8'>
-					<h1 className='text-3xl font-bold text-primary mb-4'>
-						Finance Dashboard
-					</h1>
-					<p className='text-base-content'>Dashboard Page</p>
-					<button className='btn btn-primary mt-4'>Test button</button>
+		<>
+			<div className='flex flex-row gap-4'>
+				<div className='bg-base-300'>
+					<DashboardStatCard title='Balance' data={balance}></DashboardStatCard>
+				</div>
+				<div className='bg-base-300'>
+					<DashboardStatCard
+						title='Income This Month'
+						data={income}
+					></DashboardStatCard>
+				</div>
+				<div className='bg-base-300'>
+					<DashboardStatCard
+						title='Spent This Month'
+						data={spent}
+					></DashboardStatCard>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 
