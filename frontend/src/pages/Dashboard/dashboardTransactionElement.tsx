@@ -9,12 +9,96 @@ export default function DashboardTransactionElement({
 	category,
 	amount,
 }: DashboardTransactionElementProps) {
+	// Renders a different badge colour based on the category in the transaction
+	let categoryComponent;
+
+	switch (category) {
+		case "Groceries":
+			categoryComponent = (
+				<div className='badge badge-outline badge-secondary'>{category}</div>
+			);
+			break;
+
+		case "Transport":
+			categoryComponent = (
+				<div className='badge badge-outline badge-primary'>{category}</div>
+			);
+			break;
+
+		case "Eating Out":
+			categoryComponent = (
+				<div className='badge badge-outline badge-accent'>{category}</div>
+			);
+			break;
+
+		case "Shopping":
+			categoryComponent = (
+				<div className='badge badge-outline badge-info'>{category}</div>
+			);
+			break;
+
+		case "Entertainment":
+			categoryComponent = (
+				<div className='badge badge-outline badge-error'>{category}</div>
+			);
+			break;
+
+		case "Utilities":
+			categoryComponent = (
+				<div className='badge badge-outline badge-warning'>{category}</div>
+			);
+			break;
+
+		case "Income":
+			categoryComponent = (
+				<div className='badge badge-outline badge-success'>{category}</div>
+			);
+			break;
+
+		case "Savings":
+			categoryComponent = (
+				<div
+					className='badge badge-outline'
+					style={{ color: "#0f766e", borderColor: "#0f766e" }}
+				>
+					{category}
+				</div>
+			);
+			break;
+
+		case "Subscriptions":
+			categoryComponent = (
+				<div
+					className='badge badge-outline'
+					style={{ color: "#7e22ce", borderColor: "#7e22ce" }}
+				>
+					{category}
+				</div>
+			);
+			break;
+
+		case "Miscellaneous":
+			categoryComponent = (
+				<div
+					className='badge badge-outline'
+					style={{ color: "#475569", borderColor: "#475569" }}
+				>
+					{category}
+				</div>
+			);
+			break;
+
+		default:
+			<div className='badge badge-outline'>{category}</div>;
+			break;
+	}
+
 	return (
 		<>
 			<div className='flex justify-between gap-4'>
 				<div>
 					<p>{description}</p>
-					<div className='badge badge-outline badge-secondary'>{category}</div>
+					{categoryComponent}
 				</div>
 
 				{/* Conditionally renders red text if the amount is negative,
@@ -43,11 +127,6 @@ export default function DashboardTransactionElement({
 }
 
 {
-	/* <div className='badge badge-outline badge-primary'>Primary</div>
-			<div className='badge badge-outline badge-secondary'>Secondary</div>
-			<div className='badge badge-outline badge-accent'>Accent</div>
-			<div className='badge badge-outline badge-info'>Info</div>
-			<div className='badge badge-outline badge-success'>Success</div>
-			<div className='badge badge-outline badge-warning'>Warning</div>
-			<div className='badge badge-outline badge-error'>Error</div> */
+	/*
+	 */
 }
