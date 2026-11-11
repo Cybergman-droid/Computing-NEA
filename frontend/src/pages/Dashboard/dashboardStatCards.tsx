@@ -10,21 +10,15 @@ export default function DashboardStatCards() {
 	return (
 		<div className='flex flex-row gap-4'>
 			<div className='bg-base-300'>
-				<DashboardStatCard title='Balance' amount={balance}></DashboardStatCard>
+				<DashboardStatCard title='Balance' amount={balance} />
 			</div>
 
 			<div className='bg-base-300'>
-				<DashboardStatCard
-					title='Income This Month'
-					amount={income}
-				></DashboardStatCard>
+				<DashboardStatCard title='Income This Month' amount={income} />
 			</div>
 
 			<div className='bg-base-300'>
-				<DashboardStatCard
-					title='Spent This Month'
-					amount={spent}
-				></DashboardStatCard>
+				<DashboardStatCard title='Spent This Month' amount={spent} />
 			</div>
 		</div>
 	);

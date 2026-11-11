@@ -11,7 +11,7 @@ function App() {
 	return (
 		<div className=' min-h-screen w-full bg-base-300'>
 			<Navbar />
-			{/* Defines the paths ond the components that will be rendered when navigated to that path*/}
+			{/* Defines the paths and the components that will be rendered when navigated to that path*/}
 			<Routes>
 				<Route path='/' element={<DashboardPage />} />
 				<Route path='/Charts' element={<ChartsPlaceholder />} />
