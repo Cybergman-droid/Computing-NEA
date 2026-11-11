@@ -17,13 +17,24 @@ export default function DashboardTransactionElement({
 					<div className='badge badge-outline badge-secondary'>{category}</div>
 				</div>
 
+				{/* Conditionally renders red text if the amount is negative,
+				or green text if the amount is positive */}
 				<div>
-					<p>
-						{amount.toLocaleString("en-GB", {
-							style: "currency",
-							currency: "GBP",
-						})}
-					</p>
+					{amount > 0 ? (
+						<p className='text-green-500'>
+							{amount.toLocaleString("en-GB", {
+								style: "currency",
+								currency: "GBP",
+							})}
+						</p>
+					) : (
+						<p className='text-red-500'>
+							{amount.toLocaleString("en-GB", {
+								style: "currency",
+								currency: "GBP",
+							})}
+						</p>
+					)}
 				</div>
 			</div>
 			<div className='divider'></div>
