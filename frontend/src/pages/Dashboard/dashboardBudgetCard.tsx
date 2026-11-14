@@ -13,11 +13,11 @@ export default function DashboardBudgetCard({
 	let progressBarColour;
 
 	if (percentage >= 0.9) {
-		progressBarColour = "progress progress-error";
+		progressBarColour = "progress progress-error"; // Red when the bar is > 90%
 	} else if (percentage >= 0.7) {
-		progressBarColour = "progress progress-warning";
+		progressBarColour = "progress progress-warning"; // Yellow when the bar is > 70%
 	} else {
-		progressBarColour = "progress progress-success";
+		progressBarColour = "progress progress-success"; // Green the rest of the time
 	}
 
 	return (

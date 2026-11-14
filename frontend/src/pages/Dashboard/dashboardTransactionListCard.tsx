@@ -339,7 +339,7 @@ export default function DashboardTransactionListCard() {
 	// TODO fetch data from the backend and pass it to the components
 
 	return (
-		<div className='card bg-base-100 w-150 h-full shadow-sm'>
+		<div className='card bg-base-100 w-96 shadow-sm'>
 			<div className='card-body'>
 				<h2 className='card-title'>Recent Transactions</h2>
 

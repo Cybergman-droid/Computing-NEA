@@ -5,6 +5,7 @@ type BudgetData = {
 	budgetLimit: number;
 };
 export default function DashboardBudgetCards() {
+	// TODO fetch data from the backend and pass it to the components
 	const budgetTestData: BudgetData[] = [
 		{ budgetCategory: "Eating Out", currentTotal: 150, budgetLimit: 100 },
 		{ budgetCategory: "Transport", currentTotal: 60, budgetLimit: 100 },
@@ -17,6 +18,9 @@ export default function DashboardBudgetCards() {
 			<div className='card-body'>
 				<h2 className='card-title'>Budget Status</h2>
 				<div className='flex flex-row gap-6'>
+					{/* Maps the data in the test array into the DashboardBudgetCard component 
+				which returns an array of DashboardBudgetCard components that can be rendered  */}
+
 					{budgetTestData.map((budgetData, index) => (
 						<DashboardBudgetCard
 							key={index}

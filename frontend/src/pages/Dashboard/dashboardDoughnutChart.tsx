@@ -25,7 +25,7 @@ export default function DashboardDoughnutChart() {
 		"Miscellaneous",
 	];
 	const doughnutTestData = [300, 50, 100, 450, 845, 48, 45, 15, 445, 874];
-	const data: ChartData<"doughnut"> = {
+	const dataObj: ChartData<"doughnut"> = {
 		labels: categoryDropdownOptions,
 		datasets: [
 			{
@@ -49,7 +49,7 @@ export default function DashboardDoughnutChart() {
 	};
 	return (
 		<div className='h-200 w-200'>
-			<Doughnut data={data} />
+			<Doughnut data={dataObj} />
 		</div>
 	);
 }
