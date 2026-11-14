@@ -1,5 +1,6 @@
 import DashboardBudgetCards from "./dashboardBudgetCards";
 import DashboardDoughnutChart from "./dashboardDoughnutChart";
+import DashboardImportSummaryCard from "./dashboardImportSummaryCard";
 import DashboardStatCards from "./dashboardStatCards";
 import DashboardTransactionListCard from "./dashboardTransactionListCard";
 
@@ -14,6 +15,8 @@ function DashboardPage() {
 			</div>
 
 			<DashboardBudgetCards />
+
+			<DashboardImportSummaryCard />
 		</>
 	);
 }
