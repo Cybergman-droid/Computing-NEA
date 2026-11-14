@@ -8,18 +8,20 @@ export default function DashboardStatCards() {
 	const spent = 1352.0;
 
 	return (
-		<div className='flex flex-row gap-4'>
-			<div className='bg-base-300'>
-				<DashboardStatCard title='Balance' amount={balance} />
-			</div>
+		<div className='card bg-base-0 w-full shadow-sm flex flex-row gap-6'>
+			<DashboardStatCard title='Balance' amount={balance} variant='balance' />
 
-			<div className='bg-base-300'>
-				<DashboardStatCard title='Income This Month' amount={income} />
-			</div>
+			<DashboardStatCard
+				title='Income This Month'
+				amount={income}
+				variant='income'
+			/>
 
-			<div className='bg-base-300'>
-				<DashboardStatCard title='Spent This Month' amount={spent} />
-			</div>
+			<DashboardStatCard
+				title='Spent This Month'
+				amount={spent}
+				variant='spent'
+			/>
 		</div>
 	);
 }
