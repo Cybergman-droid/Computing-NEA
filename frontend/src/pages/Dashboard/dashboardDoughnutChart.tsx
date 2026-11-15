@@ -24,13 +24,31 @@ export default function DashboardDoughnutChart() {
 		"Subscriptions",
 		"Miscellaneous",
 	];
-	const doughnutTestData = [300, 50, 100, 450, 845, 48, 45, 15, 445, 874];
-	const dataObj: ChartData<"doughnut"> = {
+	const diffTestData = [
+		{ id: "Groceries", value: 300 },
+		{ id: "Transport", value: 50 },
+		{ id: "Eating Out", value: 100 },
+		{ id: "Shopping", value: 450 },
+		{ id: "Entertainment", value: 845 },
+		{ id: "Utilities", value: 48 },
+		{ id: "Income", value: 45 },
+		{ id: "Savings", value: 15 },
+		{ id: "Subscriptions", value: 445 },
+		{ id: "Miscellaneous", value: 874 },
+	];
+
+	const options = {
+		parsing: {
+			key: "value",
+		},
+	};
+
+	const dataObj: ChartData<"doughnut", { id: string; value: number }[]> = {
 		labels: categoryDropdownOptions,
 		datasets: [
 			{
 				label: "Amount Spent",
-				data: doughnutTestData,
+				data: diffTestData,
 				backgroundColor: [
 					"rgb(255, 99, 132)",
 					"rgb(54, 162, 235)",
@@ -47,9 +65,10 @@ export default function DashboardDoughnutChart() {
 			},
 		],
 	};
+
 	return (
 		<div className='h-200 w-200'>
-			<Doughnut data={dataObj} />
+			<Doughnut options={options} data={dataObj} />
 		</div>
 	);
 }
